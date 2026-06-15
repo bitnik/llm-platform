@@ -1,6 +1,6 @@
 # llm-platform
 
-Self-hosted LLM platform on K3s - GPU inference with vLLM behind a LiteLLM gateway, cloud-native agent tooling, GitOps-managed.
+This is a POC for a self-hosted LLM platform on K3s - GPU inference with vLLM behind a LiteLLM gateway, cloud-native agent tooling, GitOps-managed.
 
 ## Machine
 
