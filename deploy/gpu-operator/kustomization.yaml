@@ -1,5 +1,6 @@
 ---
 # This config is used to generate a config map with the GPU operator values
+namespace: gpu-operator
 generatorOptions:
   # Have consistent name for valuesFrom to reference
   disableNameSuffixHash: true
