@@ -25,9 +25,14 @@ encrypt:
     n=0
     while IFS= read -r -d '' f; do
         if grep -q 'ENC\[' "$f"; then
-            echo "skip (encrypted): $f"
+            echo "skip (already encrypted): $f"
         else
-            echo "encrypting: $f"; sops encrypt -i "$f"; n=$((n+1))
+            kind=$(yq eval '.kind' "$f" 2>/dev/null || echo "none")
+            if [[ "$kind" == "Secret" || "$kind" == "ConfigMap" ]]; then
+              echo "encrypting $kind: $f"; sops encrypt --encrypted-regex '^(data|stringData)$' -i "$f"; n=$((n+1))
+            else
+              echo "encrypting: $f"; sops encrypt -i "$f"; n=$((n+1))
+            fi
         fi
     done < <(find . -type f -regextype posix-extended -regex '{{regex}}' -print0)
     echo "encrypted $n file(s)."
