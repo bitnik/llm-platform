@@ -5,6 +5,7 @@ metadata:
   name: nvidia
   namespace: flux-system
 spec:
+  # how often source-controller re-fetches the chart index from NVIDIA's repo
   interval: 24h
   url: https://helm.ngc.nvidia.com/nvidia
 ---
@@ -14,7 +15,7 @@ metadata:
   name: gpu-operator,
   namespace: gpu-operator
 spec:
-  interval: 30m
+  interval: 15m
   chart:
     spec:
       chart: gpu-operator
@@ -31,4 +32,4 @@ spec:
   valuesFrom:
   - kind: ConfigMap
     name: gpu-operator-values
-    valuesKey: values.yaml
+    valuesKey: config.yaml

@@ -6,6 +6,6 @@ generatorOptions:
 configMapGenerator:
 - name: gpu-operator-values
   files:
-  - values.yaml
+  - config.yaml
 resources:
 - deploy.yaml
