@@ -1,16 +1,30 @@
 # Bootstrap
 
-Commands to bootstrap a GPU node running Ubuntu 24.04 LTS,
-following the plan described in the [main README](README.md#setup-the-gpu-node).
+Bootstrap the GPU node running Ubuntu 24.04.
+
+> Why single node + K3s at all:
+> this POC validates the **production deployment pattern** (GPU scheduling, operator, manifests) on minimal hardware,
+> not just "can the model run."
+> The artifact worth producing is the deployment, not just a running model.
+
+1. **Install Ubuntu 24.04 LTS**
+  *Why:* best NVIDIA driver/CUDA support and the cleanest base.
+  Hetzner ships a bare OS, so you install the GPU stack yourself.
 
 ```sh
-# ssh into the GPU node
+# Update packages
 apt update
 apt upgrade
 apt full-upgrade
 apt autoremove
+```
 
-# Install the NVIDIA driver
+2. **Install the NVIDIA driver**
+  *Why:* the GPU is unusable without the kernel driver.
+  Containers reuse the host driver, so the host needs it even though CUDA itself lives in the images.
+  Skip installing the CUDA toolkit on the host: the CUDA *runtime* ships inside the vLLM container.
+
+```sh
 # https://ubuntu.com/blog/deploying-open-language-models-on-ubuntu
 apt install -y ubuntu-drivers-common
 # list available NVIDIA GPU drivers
@@ -21,7 +35,12 @@ ubuntu-drivers devices
 # installs nvidia-driver-595-open
 ubuntu-drivers install
 reboot
+```
 
+3. **Verify `nvidia-smi`**
+   *Why:* confirms the host sees the GPU, driver version, and 20 GB VRAM.
+
+```sh
 nvidia-smi
 # Mon Jun 15 14:33:01 2026
 # +-----------------------------------------------------------------------------------------+
@@ -43,14 +62,17 @@ nvidia-smi
 # |=========================================================================================|
 # |  No running processes found                                                             |
 # +-----------------------------------------------------------------------------------------+
-nvidia-detector
-# nvidia-driver-595
 
-# TODO? Persistence mode is Off. On a GPU server it's good practice to enable it so the driver stays initialized between processes (nvidia-smi -pm 1, or better, enable the nvidia-persistenced service). Minor latency/robustness win; not required since something will always hold the GPU once vLLM runs.
+# TODO?
+# Persistence mode is Off.
+# On a GPU server it's good practice to enable it so the driver stays initialized between processes
+# (nvidia-smi -pm 1, or better, enable the nvidia-persistenced service).
+# Minor latency/robustness win; not required since something will always hold the GPU once vLLM runs.
 
 # ECC shows Off. Fine for the POC, and it gives you slightly more usable VRAM/bandwidth.
-# Error-Correcting Code memory adds redundant check bits to VRAM so the GPU detects and corrects bit-flips in real time — single-bit errors corrected transparently, double-bit errors detected and flagged.
-# Without ECC, a flipped bit silently corrupts whatever sits in that cell — model weights, activations, or KV cache. 
+# Error-Correcting Code memory adds redundant check bits to VRAM so the GPU detects and corrects bit-flips in real time:
+# single-bit errors corrected transparently, double-bit errors detected and flagged.
+# Without ECC, a flipped bit silently corrupts whatever sits in that cell: model weights, activations, or KV cache.
 # VRAM capacity: ECC reserves memory for the check bits, roughly ~6% on NVIDIA GDDR. On your 20 GB card that's ~1.2 GB gone => don't do for POC.
 # # Current + Pending mode, error counters
 # nvidia-smi -q | grep -i -A3 ecc
@@ -59,17 +81,25 @@ nvidia-detector
 # # disable (then reboot)
 # nvidia-smi -e 0
 
-# Install the NVIDIA Container Toolkit
+nvidia-detector
+# nvidia-driver-595
+```
+
+4. **Install the NVIDIA Container Toolkit**
+  *Why:* this is what lets containers reach the GPU.
+  Installing it *before* K3s means K3s auto-detects the `nvidia` container runtime and creates the RuntimeClass for you.
+
+```sh
 # https://docs.nvidia.com/datacenter/cloud-native/container-toolkit/latest/install-guide.html
 apt update && apt install -y --no-install-recommends \
-   ca-certificates \
-   curl \
-   gnupg2
+  ca-certificates \
+  curl \
+  gnupg2
 curl -fsSL https://nvidia.github.io/libnvidia-container/gpgkey | gpg --dearmor -o /usr/share/keyrings/nvidia-container-toolkit-keyring.gpg \
   && curl -s -L https://nvidia.github.io/libnvidia-container/stable/deb/nvidia-container-toolkit.list | \
     sed 's#deb https://#deb [signed-by=/usr/share/keyrings/nvidia-container-toolkit-keyring.gpg] https://#g' | \
     tee /etc/apt/sources.list.d/nvidia-container-toolkit.list
-sed -i -e '/experimental/ s/^#//g' /etc/apt/sources.list.d/nvidia-container-toolkit.list   
+sed -i -e '/experimental/ s/^#//g' /etc/apt/sources.list.d/nvidia-container-toolkit.list
 apt update
 export NVIDIA_CONTAINER_TOOLKIT_VERSION=1.19.1-1
   apt install -y \
@@ -84,8 +114,13 @@ export NVIDIA_CONTAINER_TOOLKIT_VERSION=1.19.1-1
 
 nvidia-ctk --version
 nvidia-container-cli info
+```
 
-# Install K3s (single node)
+5. **Install K3s (single node)**
+  *Why:* lightweight orchestration; the layer the whole architecture is validated against.
+  K3s bundles Traefik (ingress) and local-path (storage).
+
+```sh
 # https://docs.k3s.io/quick-start
 # After running this installation:
 # The K3s service will be configured to automatically restart after node reboots or if the process crashes or is killed
@@ -102,10 +137,39 @@ export KUBECONFIG=/etc/rancher/k3s/k3s.yaml
 # echo "alias k=\"kubectl\"" >> ~/.bashrc
 # should go Ready in a few seconds
 kubectl get nodes
-# expect 'nvidia' to be present
+# Check if `nvidia` runtimeclass exists
 kubectl get runtimeclass
+# Check the generated containerd config if it references the nvidia runtime
+grep -A6 nvidia /var/lib/rancher/k3s/agent/etc/containerd/config.toml
 
-# Configure firewall
+# Run end-to-end GPU test to see if it gets the GPU
+kubectl apply -f - <<'EOF'
+apiVersion: v1
+kind: Pod
+metadata:
+  name: gpu-smoke
+spec:
+  runtimeClassName: nvidia
+  restartPolicy: Never
+  containers:
+  - name: cuda
+    image: nvidia/cuda:12.6.2-base-ubuntu24.04
+    command: ["nvidia-smi"]
+    env:
+    - name: NVIDIA_VISIBLE_DEVICES
+      value: all
+    - name: NVIDIA_DRIVER_CAPABILITIES
+      value: all
+EOF
+# should print the same nvidia-smi table you saw on the host
+kubectl logs gpu-smoke
+kubectl delete pod gpu-smoke
+```
+
+6. **Configure firewall**
+  *Why:* TODO
+
+```sh
 # https://docs.k3s.io/installation/requirements?os=debian
 kubectl get -n kube-system svc traefik
 # NAME      TYPE           CLUSTER-IP      EXTERNAL-IP   PORT(S)                      AGE
@@ -155,32 +219,150 @@ nc -zvu -w5 <node-ip> 8472
 # nc -zv -w5 -6 <node-ip6> 6443
 nc -zv -w5 <node-ip> 6443
 # python3 -c "import socket; s=socket.socket(socket.AF_INET6); s.settimeout(5); print('open' if s.connect_ex(('<node-ip6>',6443))==0 else 'blocked')"
+```
 
-# end-to-end GPU test
-kubectl apply -f - <<'EOF'
-apiVersion: v1
-kind: Pod
-metadata:
-  name: gpu-smoke
-spec:
-  runtimeClassName: nvidia
-  restartPolicy: Never
-  containers:
-  - name: cuda
-    image: nvidia/cuda:12.6.2-base-ubuntu24.04   # or any current cuda *-base tag
-    command: ["nvidia-smi"]
-    env:
-    - name: NVIDIA_VISIBLE_DEVICES
-      value: all
-    - name: NVIDIA_DRIVER_CAPABILITIES
-      value: all
-EOF
-# should print the same nvidia-smi table you saw on the host
-kubectl logs gpu-smoke
-kubectl delete pod gpu-smoke
+7. **Install the NVIDIA GPU Operator**
+  *Why:* advertises `nvidia.com/gpu` to the scheduler via the device plugin,
+  runs node-feature-discovery, and ships the **DCGM exporter** for GPU metrics.
+  This is what turns "a GPU in a box" into "a GPU that pods can request."
+
+```sh
+# Install Helm first
+# https://helm.sh/docs/intro/install/#from-apt-debianubuntu
+HELM_BUILDKITE_APT_KEY_ID="DDF78C3E6EBB2D2CC223C95C62BA89D07698DBC6"
+apt install curl gpg apt-transport-https --yes
+curl -fsSL https://packages.buildkite.com/helm-linux/helm-debian/gpgkey > "${TMPDIR:-/tmp}/helm.gpg"
+if [ "$(gpg --show-keys --with-colons "${TMPDIR:-/tmp}/helm.gpg" | awk -F: '$1 == "fpr" {print $10}' | head -n 1)" != "${HELM_BUILDKITE_APT_KEY_ID}" ]; then echo "ERROR: Unexpected Helm APT key ID: potential key compromise"; exit 1; fi
+cat "${TMPDIR:-/tmp}/helm.gpg" | gpg --dearmor | tee /usr/share/keyrings/helm.gpg > /dev/null
+echo "deb [signed-by=/usr/share/keyrings/helm.gpg] https://packages.buildkite.com/helm-linux/helm-debian/any/ any main" | tee /etc/apt/sources.list.d/helm-stable-debian.list
+apt update
+apt install helm
 
 # Install the NVIDIA GPU Operator (make the GPU schedulable)
 # https://github.com/nvidia/gpu-operator
+# https://docs.nvidia.com/datacenter/cloud-native/gpu-operator/latest/getting-started.html
 # Returns empty now
-kubectl describe node | grep nvidia.com/gpu 
+kubectl describe nodes | grep nvidia.com/gpu
+# Install
+helm repo add nvidia https://helm.ngc.nvidia.com/nvidia
+helm repo update
+helm install gpu-operator -n gpu-operator --create-namespace \
+  nvidia/gpu-operator --version=v26.3.2 \
+  -f deploy/gpu-operator/config.yaml
+
+kubectl get pods -n gpu-operator
+kubectl describe node | grep nvidia.com/gpu
+# Verification
+# https://docs.nvidia.com/datacenter/cloud-native/gpu-operator/latest/getting-started.html#verification-running-sample-gpu-applications
+kubectl apply -f deploy/gpu-operator/cuda-vectoradd.yaml
+kubectl logs pod/cuda-vectoradd
+# [Vector addition of 50000 elements]
+# Copy input data from the host memory to the CUDA device
+# CUDA kernel launch with 196 blocks of 256 threads
+# Copy output data from the CUDA device to the host memory
+# Test PASSED
+# Done
+kubectl delete -f cuda-vectoradd.yaml
 ```
+
+8. **Setup fluxcd**
+   *Why:* TODO
+
+```sh
+# https://fluxcd.io/flux/installation/
+curl -s https://fluxcd.io/install.sh | bash
+# echo "source <(flux completion bash)" >> ~/.bashrc
+
+# https://fluxcd.io/flux/get-started/
+# https://fluxcd.io/flux/installation/bootstrap/github/#github-pat
+# Validate the cluster
+flux check --pre
+flux version
+# Install flux on the cluster
+export GITHUB_USER=<your-username>
+export GITHUB_TOKEN=<your-PAT>
+# This installs the controllers, creates clusters/llm-platform/flux-system/, and commits it to your repo.
+flux bootstrap github \
+  --owner=$GITHUB_USER \
+  --repository=llm-platform \
+  --branch=main \
+  --path=./clusters/llm-platform \
+  --personal
+kubectl get pods -n flux-system
+# git pull
+
+# Encrypting/Decrypting secrets using age
+# https://fluxcd.io/flux/guides/mozilla-sops/#encrypting-secrets-using-age
+age-keygen -o flux.agekey
+cat flux.agekey |
+  kubectl create secret generic sops-age \
+  --namespace=flux-system \
+  --from-file=age.agekey=/dev/stdin
+kubectl get secret -n flux-system sops-age -o yaml | yq '.data["age.agekey"]'
+
+# Verify
+flux get kustomizations
+flux get helmreleases -A
+# operator still healthy after adoption
+kubectl get pods -n gpu-operator
+```
+
+<!--8. **Create the model-weights PVC** (K3s `local-path`, on NVMe)
+  *Why:* persist weights so pod restarts don't re-download ~17 GB.
+
+```sh
+
+```
+
+9. **Deploy vLLM** serving Qwen3.6-27B, requesting `nvidia.com/gpu: 1`, with
+  `--gpu-memory-utilization` tuned (and later `--enable-sleep-mode`)
+  *Why:* the model server. OpenAI-compatible API, continuous batching for
+  multi-user concurrency, and the `/metrics` that answer the concurrency question.
+
+```sh
+
+```
+
+10. **Deploy LiteLLM** (gateway)
+  *Why:* single front door — model-name routing, per-user keys, rate-limit,
+  logging, and the Anthropic↔OpenAI translation that Claude Code needs. vLLM is
+  never hit directly; only LiteLLM talks to it.
+
+```sh
+
+```
+
+11. **Configure Traefik Ingress + TLS** (cert-manager)
+    *Why:* one secured HTTPS endpoint for the dev-laptop tools. In-cluster agents
+    skip the Ingress and use the ClusterIP.
+
+```sh
+
+```
+
+12. **Deploy observability** — Prometheus + Grafana scraping DCGM + vLLM `/metrics`
+    (+ OTel for traces if wanted)
+    *Why:* this is the instrument of the POC — GPU utilization, KV-cache pressure,
+    preemptions, p95 latency. Without it you can't prove the concurrency ceiling.
+
+```sh
+
+```
+
+13. **Wire up the consumers**
+    - kagent: `ModelConfig` with `provider: OpenAI`, `openAI.baseUrl` → LiteLLM
+    - kubectl-ai / k8sgpt: OpenAI base URL → LiteLLM
+    - Claude Code: `ANTHROPIC_BASE_URL` → LiteLLM's Anthropic endpoint
+    *Why:* the actual workload under test.
+
+```sh
+
+```
+
+14. **(Later) Second model + sleep-mode switching**
+    *Why:* add gpt-oss-20b, enable Level-1 sleep (weights parked in your 64 GB RAM),
+    front with the switch controller — multi-model on one GPU without 2× VRAM.
+
+```sh
+
+```-->

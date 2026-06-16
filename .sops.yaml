@@ -1,0 +1,7 @@
+---
+creation_rules:
+# Any *.enc.{yaml,json,env,md} file, anywhere in the repo,
+- path_regex: \.enc\.(ya?ml|json|env|md)$
+  age: >-
+    age1yltgwsnfxgstlyhf2ek9kcug0f6hw9dkhkang9kcdr77qgj8ay4qg6p3yy,
+    age1wfk6k9ls7tu70newlv8sp9z0veu7jl5tr83pcw507ushwj3s43kswev88r

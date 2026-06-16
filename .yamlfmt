@@ -1,0 +1,31 @@
+---
+# yamlfmt configuration file
+# https://github.com/google/yamlfmt
+# https://github.com/google/yamlfmt/blob/main/docs/config-file.md#command
+doublestar: true
+continue_on_error: false
+gitignore_excludes: true
+match_type: doublestar
+# include: []
+# - "**/*.{yaml,yml,yamlfmt}"
+exclude:
+- "clusters/llm-platform/flux-system/gotk-*.yaml" # exclude flux generated files
+extensions:
+- .yaml
+- .yml
+- .yamlfmt
+# https://github.com/google/yamlfmt/blob/main/docs/config-file.md#basic-formatter
+formatter:
+  type: basic
+  include_document_start: true
+  indent: 2
+  indentless_arrays: true
+  # array_indent: 2  # same as indent by default
+  # https://github.com/google/yamlfmt/blob/main/docs/config-file.md#max_line_length
+  # max_line_length: 160  # disabled by default
+  pad_line_comments: 1
+  force_array_style: block
+  force_quote_style: double
+  retain_line_breaks: false
+  retain_line_breaks_single: true
+  scan_folded_as_literal: true

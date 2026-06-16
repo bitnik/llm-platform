@@ -1,0 +1,15 @@
+---
+# https://github.com/NVIDIA/gpu-operator/blob/v26.3.2/deployments/gpu-operator/values.yaml
+# https://docs.nvidia.com/datacenter/cloud-native/gpu-operator/latest/getting-started.html#common-chart-customization-options
+driver:
+  # host already has the Ubuntu-packaged 595 driver
+  enabled: false
+toolkit:
+  # host already has the NVIDIA Container Toolkit
+  # K3s auto-detected the runtime
+  enabled: false
+
+# TODO
+# dcgmExporter:
+#   serviceMonitor:
+#     enabled: true
