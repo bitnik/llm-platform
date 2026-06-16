@@ -1,0 +1,5 @@
+---
+namespace: vllm
+resources:
+- namespace.yaml
+- pvc.yaml
