@@ -3,7 +3,8 @@ apiVersion: source.toolkit.fluxcd.io/v1
 kind: HelmRepository
 metadata:
   name: nvidia
-  namespace: flux-system
+  # TODO: This is enforced by the namespace defined in kustomization.yaml. Better find a way to create this in flux-system namespace.
+  namespace: gpu-operator
 spec:
   # how often source-controller re-fetches the chart index from NVIDIA's repo
   interval: 24h
@@ -23,7 +24,7 @@ spec:
       sourceRef:
         kind: HelmRepository
         name: nvidia
-        namespace: flux-system
+        namespace: gpu-operator
   # values:
   #   driver:
   #     enabled: false
@@ -31,5 +32,5 @@ spec:
   #     enabled: false
   valuesFrom:
   - kind: ConfigMap
-    name: gpu-operator-values
+    name: gpu-operator-config
     valuesKey: config.yaml

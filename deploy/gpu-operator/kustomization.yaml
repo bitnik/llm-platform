@@ -5,7 +5,7 @@ generatorOptions:
   # Have consistent name for valuesFrom to reference
   disableNameSuffixHash: true
 configMapGenerator:
-- name: gpu-operator-values
+- name: gpu-operator-config
   files:
   - config.yaml
 resources:
