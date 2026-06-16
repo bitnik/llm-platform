@@ -10,6 +10,7 @@ match_type: doublestar
 # - "**/*.{yaml,yml,yamlfmt}"
 exclude:
 - "clusters/llm-platform/flux-system/gotk-*.yaml" # exclude flux generated files
+- "**/*.enc.{yml,yaml,json,env,md}"
 extensions:
 - .yaml
 - .yml
