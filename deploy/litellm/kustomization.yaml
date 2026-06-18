@@ -1,5 +1,6 @@
 ---
 namespace: litellm
 resources:
+- namespace.yaml
 - config.enc.yaml
 - deploy.yaml
