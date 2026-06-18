@@ -44,8 +44,8 @@ spec:
       modelSpec:
       - name: "opt125m"
         repository: "vllm/vllm-openai"
-        # TODO pin once validated
-        tag: "latest"
+        # vLLM engine version
+        tag: "v0.23.0"
         modelURL: "facebook/opt-125m"
         replicaCount: 1
         requestCPU: 6
