@@ -2,3 +2,4 @@
 resources:
 - gpu-operator
 - vllm-stack
+- litellm
