@@ -105,3 +105,6 @@ spec:
           # budget = 20GB * 0.92 ≈ 18.4 GiB
           # KV pool = budget − weights − CUDA graphs − activations/overhead ≈ 2.62 GiB
           #         ≈ 18.4   − 13.8    − 0.39        − ~1.6
+          extraArgs:
+          - "--served-model-name"
+          - "gpt-oss-20b"
