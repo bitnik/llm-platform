@@ -1,6 +1,6 @@
 ---
 # https://docs.nvidia.com/datacenter/cloud-native/gpu-operator/latest/getting-started.html#cuda-vectoradd
-# This is used to verify GPU operator deployment
+# This is used to verify GPU operator deployment during bootstrap
 apiVersion: v1
 kind: Pod
 metadata:

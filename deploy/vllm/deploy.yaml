@@ -1,0 +1,64 @@
+---
+# https://docs.vllm.ai/en/stable/deployment/k8s/
+# https://docs.vllm.ai/en/stable/deployment/integrations/production-stack/
+# https://github.com/vllm-project/production-stack/tree/main/helm
+# https://docs.vllm.ai/projects/production-stack/en/latest/index.html
+apiVersion: source.toolkit.fluxcd.io/v1
+kind: HelmRepository
+metadata:
+  name: vllm
+  namespace: flux-system
+spec:
+  interval: 1h
+  url: https://vllm-project.github.io/production-stack
+---
+apiVersion: helm.toolkit.fluxcd.io/v2
+kind: HelmRelease
+metadata:
+  name: vllm-stack
+  namespace: vllm
+spec:
+  interval: 15m
+  # timeout: 15m
+  chart:
+    spec:
+      chart: vllm-stack
+      version: "0.1.11"
+      sourceRef:
+        kind: HelmRepository
+        name: vllm
+        namespace: vllm
+  install:
+    remediation:
+      retries: 3
+  upgrade:
+    remediation:
+      retries: 3
+  # https://docs.vllm.ai/en/stable/deployment/integrations/production-stack/
+  # https://github.com/vllm-project/production-stack/blob/vllm-stack-0.1.11/helm/values.yaml
+  # https://docs.vllm.ai/projects/production-stack/en/latest/getting_started/quickstart.html
+  # https://github.com/vllm-project/production-stack/blob/main/tutorials/assets/values-01-minimal-example.yaml
+  values:
+    servingEngineSpec:
+      runtimeClassName: "nvidia"
+      modelSpec:
+      - name: "opt125m"
+        repository: "vllm/vllm-openai"
+        # TODO pin once validated
+        tag: "latest"
+        modelURL: "facebook/opt-125m"
+        replicaCount: 1
+        requestCPU: 6
+        requestMemory: "16Gi"
+        requestGPU: 1
+        # Optional resource limits - if not specified, only GPU will have a limit
+        # limitCPU: "8"
+        # limitMemory: "32Gi"
+        # NOT mig. Our card has no MIG
+        requestGPUType: "nvidia.com/gpu"
+        storageClass: "local-path"
+        # pvcStorage: "100Gi"
+        # Actually token is not needed for facebook/opt-125m, which is public
+        hf_token:
+          secretName: "hf-token"
+          secretKey: "token"

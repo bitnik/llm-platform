@@ -1,18 +1,32 @@
 ---
+# https://fluxcd.io/flux/components/kustomize/kustomizations/#working-with-kustomizations
+# NOTE: This is flux kustomization resource.
 apiVersion: kustomize.toolkit.fluxcd.io/v1
 kind: Kustomization
 metadata:
   name: deploy
   namespace: flux-system
 spec:
-  interval: 10m
-  path: ./deploy
+  interval: 10m0s
+  # retry every two minutes on apply or waiting failures
+  retryInterval: 2m0s
+  # wait for all applied resources to become ready. When enabled, the HealthChecks are ignored. Defaults to false.
+  wait: true
+  # give up waiting after three minutes. Defaults to 'Interval' duration.
+  # timeout: 3m0s
+  # remove stale resources from cluster (Garbage Collection)
   prune: true
+  # set the namespace for all resources
+  # targetNamespace: apps
+  # enable this to recreate resources on immutable fields changes
+  force: false
   # Generated while bootstrapping flux
   # kubectl get gitrepositories -n flux-system flux-system
   sourceRef:
     kind: GitRepository
     name: flux-system
+  # reconcile resources from the specified path
+  path: ./deploy
   decryption:
     provider: sops
     secretRef:
