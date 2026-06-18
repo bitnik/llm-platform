@@ -56,7 +56,10 @@ spec:
     db:
       deployStandalone: true
       useExisting: false
+    # Config for bitnami postgres chart
     postgresql:
+      image:
+        repository: bitnamilegacy/postgresql
       architecture: standalone
       auth:
         username: litellm
