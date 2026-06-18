@@ -4,28 +4,28 @@ metadata:
     name: litellm-values
     namespace: litellm
 stringData:
-    values.yaml: ENC[AES256_GCM,data:BoEbL3Ejb94TW78QRhW1u4VlrT0wbpSnUcO4K5IaC1dB0x15eeyg4uEJmt0/TLcvH3BeCLSbEX6Pa8p6lyntIdxi20+37+RMPiqhNMg57CS8ARJUyHA0VIJXXy4XB343t1it6E9Y1j1Jl9dL5yGaLe2agRbM9to04OHV7byi5j2GuafompdgM7GQ46mQD6F2hslTtp9OJko6OPki0v+5bCzK/bEq9FZZpVaQmlW3+jRqoFTg6Dj/gULPzz0A4yU4XIp1/GBgmpB79CKow2xPuyEeH91+b3LyxW0E/7bm3nEznHt01tHjcY3KlcbQzHAHxVsl3URLwtkCeJHh2YRNTAwTQALKw9wBE0l+6WBR5jYovdI6hmgL8VllipvYHFCjRyQNMyCdIk4AVfIbLsQE7bBOqtPY078nBYXzh2Hiqw==,iv:MGBID5zBA80p0L+wi29Ncv0Rv/d+IjDo/s5EqsDaQgc=,tag:c74LL3hbHcehBI+TmkXTmA==,type:str]
+    values.yaml: ENC[AES256_GCM,data:IdPD925MV9F/9S24awpMDcr6LU2JkmstYmgs1E6CAQZ9y0U5LcuEOK5YLBveAuI6TywxjtGNpXF/vcFZZ8BR4v7mAt5Z9vYiht+vINX25v480GNf74RgnSAfd2vMSw+2zOEB60ZhPU8Q26UaCFGHozy42SsGodRISR8eGTgkl7i7ec4KLiQdx6R/+kpwAMY80cFTQS3V9DdpACBIJQWmAuKrj38y4SsdP1AxtwUokvlJXWy9YWx1gEDFLtoz9alSwaLY9PnH2u32vfScVchvvN5JAKdttmn/7/qqUqWYVHjh55Qbdsw8LfFFp1Z1DxoDlgG/LtVjuy6t9hUr2c0RrpxQkeCWQemiXljWfu7uAy2er8ZnfC/BoXH0vSulhX8EYzRB2itGDhRhYFkytGZ2zQgOgRnwLJ6ONW0s2nrCqzpejLrXgVXYgJ2hA/E/cTbLUnNRFlb7PS/qkLDQmq9FpDeXF9ieDdC8bEiyKcx3xDg1dmgl7pjmimU2Dv0jCZsb5joFM2iDyi0ANhjgemb2H4SBmO2FmPNJ4ben/AYo9KsdrzVbv8vB3LjtWN2ylMFdGCVwqMF0QnxTTg3KdyeY6hMdYZ/kKc7ykyN3AO7pQ02cEBBLd31gqY5iN2hb2p6EVzj9AgPU04k5ogHNx9l8nQFo3ymNi5lz+99LzM53MLyKanwaVWA/Fetejq6h,iv:Pwy1jjxHt2YpfAa2x17MezgBU9JZhtxpuAa/LPMkfpU=,tag:TGYoy+kqXS1o5YrD6/RjjQ==,type:str]
 sops:
     age:
         - enc: |
             -----BEGIN AGE ENCRYPTED FILE-----
-            YWdlLWVuY3J5cHRpb24ub3JnL3YxCi0+IFgyNTUxOSBEVUd2amR6Zlc3RlRIZCtX
-            SVhMbytCT05uUFpoSE84dWVDcHdDY21PZzI0CjJVWDFiYUtQLzJaYTZwd08rVzJ5
-            SEloeTRObXN0R0xDZmNrWUlKL3hNMTQKLS0tIHgzS3NIbHN4Z1IwK2RPbGJKa3FV
-            RlR6bWJYV2tMVmNoODV0Qk1EQXBtRkEKm5gxg7GrLCUCSv9qpEiZL2yAV5+zwkfl
-            YrM9evJj/gRuudIxvYoQy5Q+hrWWfM6dODyO2LiZm8BmarErulcJng==
+            YWdlLWVuY3J5cHRpb24ub3JnL3YxCi0+IFgyNTUxOSBhWU4wcE8rMEtLdXFXSGxB
+            MDBsWWM1amxXMWFwc0NKQi83L3pIYkJPMFFrCm5WcGYwUUlMNldjZDRvNWR5OEx5
+            dE1mSHVKZHNyemU0OFVtci8wUERobEUKLS0tIGJWZHduUSsrN1YwRUF4eVRRaitK
+            QjVnMTlsU0ZIM2IzRUJndzdCTTExNEUK0bRmsoPbzwpCgn08GoRbT/pdQ195x9gM
+            n25mNv4hGZl8zvzi3fpfjmwWNEmUU1Z2ZvidH6cZNzxzVOu14eT6Qw==
             -----END AGE ENCRYPTED FILE-----
           recipient: age1yltgwsnfxgstlyhf2ek9kcug0f6hw9dkhkang9kcdr77qgj8ay4qg6p3yy
         - enc: |
             -----BEGIN AGE ENCRYPTED FILE-----
-            YWdlLWVuY3J5cHRpb24ub3JnL3YxCi0+IFgyNTUxOSB1ZFpBd2lEWTVzK1V2SjJx
-            TFlPdlBGS1FGYnRNZFZ3M0FDSDRHenZ4S2pnCnhYRlM4RE0rWlNEbUhHeDFpd01X
-            L3R3cUhCQUN3b2lwRkRNT3NsVUo3YlkKLS0tIFFOSEx1Q2RrU2piMmNWU2thK2sy
-            UEszUEhBMlMyMkdPeUtUaTVxbGUxc1kKyF0Ierc3zmRFuffbkDQy1HwvrlpNDY73
-            iA7A94jU1CI+y80WBS9B7Y8fNGK5phsY6vmM8vpo05/zg3xDnfFa4A==
+            YWdlLWVuY3J5cHRpb24ub3JnL3YxCi0+IFgyNTUxOSBITUZqalA4UFdhZDJrTjR3
+            alhoUUhVYVdhVmNob0hDcW9DOGx6TUgwVXl3CjNNV0VRM29zOTFHclUxdnpyVW5J
+            ZUdtU3J5Umh0Mk1DTDJReGhhT0VmUTgKLS0tIHNEdGYzT3k4a2dIMk9raERpK3Ar
+            c2tlYjJFQ3JGbGdGc3FIOXQzeC94NWMKQ6+cbsTFdMVnFANMpCD7o7vNzq64IwE8
+            RY8Pw0T3KT5b9+HwVaVBXPO2yoE6gKhKx8GjAHfVSCBeiFXMTMJoag==
             -----END AGE ENCRYPTED FILE-----
           recipient: age1wfk6k9ls7tu70newlv8sp9z0veu7jl5tr83pcw507ushwj3s43kswev88r
     encrypted_regex: ^(data|stringData)$
-    lastmodified: "2026-06-18T13:18:48Z"
-    mac: ENC[AES256_GCM,data:4PCCJGxY8vl4vJe5AA+y6IA16P1WBvHupFnXn0LCuTDVpOmpS4isX/2G0wvVStA+V8JVB15sg0po9a/0JRj9FrNhmfNWWsKI8k5Wv785P5MOsN0bMTGqqEGpYDg6N4ylIa3csKVukHMpwWz8D90aOG2indoi0gJhFW6y8V/7Z2o=,iv:EOGOmI910cKkrLmBPTg0hFv5jtDI+mkW954BvCeT02E=,tag:E/3Nu624taDxBDz4Et/1Sg==,type:str]
+    lastmodified: "2026-06-18T14:27:58Z"
+    mac: ENC[AES256_GCM,data:gCGVKPz9n2pfUypzOMb75op0yRVfir60hQWKiDLPympfTahckpRlIq73351nCdllvus3TBfmaKDfxOeaauyPWy916QldnepDWMxS5or1WJfqN+HsxCcZ0GkDvDyyzRfpgFIcaE+HR6IfneM5Fvtq+BSJZlvWHVEJcvR5Vh3sy7g=,iv:MucIQ3PcJ5Abeqsy0bareSRwRDvPGXy6RQqD4ccYHig=,tag:OvXrKC0WIBN77i8tL551LA==,type:str]
     version: 3.13.1

@@ -87,9 +87,12 @@ spec:
     service:
       type: ClusterIP
       port: 4000
-    # Don't let the chart create its own Ingress
     ingress:
-      enabled: false
+      enabled: true
+      # host is defined in config.enc.yaml
+      className: "traefik"
+      annotations:
+        cert-manager.io/cluster-issuer: letsencrypt-staging
     migrationJob:
       enabled: true
       hooks:
