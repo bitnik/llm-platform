@@ -293,10 +293,12 @@ flux bootstrap github \
   --personal
 kubectl get pods -n flux-system
 # git pull
+# Verify
 # Bootstap generates following flux resources. Defined in ./clusters/llm-platform/flux-system/gotk-sync.yaml
 kubectl get gitrepositories.source.toolkit.fluxcd.io -n flux-system flux-system
 kubectl get kustomizations.kustomize.toolkit.fluxcd.io -n flux-system flux-system
 flux version
+flux get kustomizations -A
 
 # Encrypting/Decrypting secrets using age
 # https://fluxcd.io/flux/guides/mozilla-sops/#encrypting-secrets-using-age

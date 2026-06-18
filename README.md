@@ -158,8 +158,8 @@ kubectl get gitrepositories,kustomizations,helmreleases -A
 
 ## Roadmap
 
-- [ ] Observability: kube-prometheus-stack, DCGM, vLLM,  LiteLLM metrics, grafana dashboards
+- [ ] Observability: kube-prometheus-stack, DCGM, vLLM, LiteLLM metrics, grafana dashboards
 - [ ] OTel for traces
 - [ ] Validate with kagent (in-cluster), kubectl-ai, k8sgpt, Claude Code
-- [ ] COnfigure LiteLLM users, keys, budgets, rate-limits (e.g. [terraform-provider-litellm](https://github.com/ncecere/terraform-provider-litellm))
+- [ ] Configure LiteLLM users, keys, budgets, rate-limits (e.g. [terraform-provider-litellm](https://github.com/ncecere/terraform-provider-litellm))
 - [ ] Second model + sleep/wake VRAM switching
