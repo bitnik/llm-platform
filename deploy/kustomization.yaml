@@ -1,6 +1,7 @@
 ---
 resources:
 - cert-manager
+- cert-manager-issuers
 - gpu-operator
 - vllm-stack
 - litellm
