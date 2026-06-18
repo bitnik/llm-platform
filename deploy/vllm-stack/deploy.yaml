@@ -40,13 +40,31 @@ spec:
   # https://github.com/vllm-project/production-stack/blob/main/tutorials/assets/values-01-minimal-example.yaml
   values:
     servingEngineSpec:
+      # We have 1 GPU
+      strategy:
+        type: Recreate
       runtimeClassName: "nvidia"
       modelSpec:
-      - name: "opt125m"
+      # - name: "opt125m"
+      #   repository: "vllm/vllm-openai"
+      #   # vLLM engine version
+      #   tag: "v0.23.0"
+      #   modelURL: "facebook/opt-125m"
+      #   replicaCount: 1
+      #   requestCPU: 6
+      #   requestMemory: "16Gi"
+      #   requestGPU: 1
+      #   # Optional resource limits - if not specified, only GPU will have a limit
+      #   # limitCPU: "8"
+      #   # limitMemory: "32Gi"
+      #   # NOT mig. Our card has no MIG
+      #   requestGPUType: "nvidia.com/gpu"
+      #   storageClass: "local-path"
+      - name: "gptoss20b"
         repository: "vllm/vllm-openai"
         # vLLM engine version
         tag: "v0.23.0"
-        modelURL: "facebook/opt-125m"
+        modelURL: "openai/gpt-oss-20b"
         replicaCount: 1
         requestCPU: 6
         requestMemory: "16Gi"
@@ -57,8 +75,7 @@ spec:
         # NOT mig. Our card has no MIG
         requestGPUType: "nvidia.com/gpu"
         storageClass: "local-path"
-        # pvcStorage: "100Gi"
-        # Actually token is not needed for facebook/opt-125m, which is public
+        pvcStorage: "60Gi"
         hf_token:
           secretName: "hf-token"
           secretKey: "token"
