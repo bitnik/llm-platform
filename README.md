@@ -13,6 +13,8 @@ NVIDIA **RTX 4000 SFF Ada**, 20 GB VRAM, Ubuntu 24.04, single-node K3s.
 
 ## Architecture
 
+This diagram shows the **target** design, see [Roadmap](#roadmap) for the parts not built yet.
+
 ```txt
                   DEV LAPTOPS (external)                           IN-CLUSTER
         ┌──────────────┬──────────────┬──────────────-┐              ┌─--─────┐
@@ -55,6 +57,7 @@ NVIDIA **RTX 4000 SFF Ada**, 20 GB VRAM, Ubuntu 24.04, single-node K3s.
               │ ALL model weights (cold)  │   │                              │
               └───────────────────────────┘   └──────────────────────────────┘
 ```
+
 ## Repository layout
 
 ```txt
@@ -138,18 +141,6 @@ just check
 ```
 
 ### Connect to the cluster
-
-```sh
-NODEIP=""
-# start ssh tunnel
-ssh -L 16443:127.0.0.1:6443 root@$NODEIP
-# download kubeconfig and use localhost for kubeapiserver
-scp root@$NODEIP:/etc/rancher/k3s/k3s.yaml ~/.kube/llm-platform.yaml
-sed -i 's#127.0.0.1:6443#127.0.0.1:16443#' ~/.kube/llm-platform.yaml
-sed -i 's/default/llm-platform/g' ~/.kube/llm-platform.yaml
-```
-
-### Cluster management
 
 ```sh
 NODEIP=""
