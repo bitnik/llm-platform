@@ -156,6 +156,29 @@ flux get all -A
 kubectl get gitrepositories,kustomizations,helmreleases -A
 ```
 
+## Usage
+
+The LiteLLM gateway is reachable over HTTPS via Ingress.
+Authenticate with a LiteLLM key, below uses the master key for convenience (See [Roadmap](#roadmap)).
+
+```sh
+MK=$(kubectl -n litellm get secret litellm-masterkey -o jsonpath='{.data.masterkey}' | base64 -d)
+URL=$(kubectl get ingress -n litellm litellm -o yaml | yq '.spec.tls.0.hosts.0')
+
+# list available models
+curl -s https://$URL/v1/models -H "Authorization: Bearer $MK" | jq '.data[].id'
+
+# OpenAI protocol
+curl -s https://$URL/v1/chat/completions -H "Authorization: Bearer $MK" \
+  -H 'content-type: application/json' \
+  -d '{"model":"gpt-oss-20b","max_tokens":300,"messages":[{"role":"user","content":"reply with one short sentence"}]}' | jq
+
+# Anthropic protocol
+curl -s https://$URL/v1/messages -H "Authorization: Bearer $MK" \
+  -H 'content-type: application/json' \
+  -d '{"model":"gpt-oss-20b","max_tokens":300,"messages":[{"role":"user","content":"Explain what Kubernetes is in two sentences."}]}' | jq
+```
+
 ## Roadmap
 
 - [ ] Observability: kube-prometheus-stack, DCGM, vLLM, LiteLLM metrics, grafana dashboards
