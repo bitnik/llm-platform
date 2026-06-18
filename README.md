@@ -30,7 +30,7 @@ This diagram shows the **target** design, see [Roadmap](#roadmap) for the parts 
               ╔══════════════════════════════════════════════════════====════════════================╗
               ║ LiteLLM Proxy  (gateway) - routes by model name                                      ║
               ║                          - implements per-userkeys, budget, rate-limit, logging      ║
-              ║   "qwen" ─┐         "gpt-oss" ─-┐                                                    ║
+              ║   "gpt-oss" ─┐         "qwen" ─-┐                                                    ║
               ╚═══════════╪═════════════════════╪════════════════════════════════════================╝
                           │                     │
                           │   OpenAI protocol   │
@@ -39,7 +39,7 @@ This diagram shows the **target** design, see [Roadmap](#roadmap) for the parts 
               ║ MODEL SERVING via vLLM (one physical GPU, one model active at a time) ║
               ║                                                                       ║
               ║   ┌─────────────────────┐        ┌─────────────────────┐              ║
-              ║   │ vLLM: Qwen3.6-27B   │        │ vLLM: gpt-oss-20b   │              ║
+              ║   │ vLLM: gpt-oss-20b   │        │ vLLM: Qwen3.6-27B   │              ║
               ║   │  ● ACTIVE           │        │  ○ SLEEPING (L1)    │              ║
               ║   │  weights → VRAM     │        │  weights → RAM      │              ║
               ║   │  holds gpu:1        │        │  0 VRAM used        │              ║
@@ -82,7 +82,7 @@ First-time setup of the GPU node
 
 ## Deploy (GitOps)
 
-[Flux](https://fluxcd.io/) watches this repo and reconciles the cluster to match it.
+[Flux](https://fluxcd.io/) watches this repo **main** branch and reconciles the cluster to match it.
 The entrypoint is [`clusters/llm-platform`](clusters/llm-platform),
 which applies the apps under [`deploy/`](deploy) (decrypting SOPS secrets with the in-cluster age key).
 
