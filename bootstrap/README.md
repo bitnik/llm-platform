@@ -99,7 +99,7 @@ curl -fsSL https://nvidia.github.io/libnvidia-container/gpgkey | gpg --dearmor -
   && curl -s -L https://nvidia.github.io/libnvidia-container/stable/deb/nvidia-container-toolkit.list | \
     sed 's#deb https://#deb [signed-by=/usr/share/keyrings/nvidia-container-toolkit-keyring.gpg] https://#g' | \
     tee /etc/apt/sources.list.d/nvidia-container-toolkit.list
-sed -i -e '/experimental/ s/^#//g' /etc/apt/sources.list.d/nvidia-container-toolkit.list
+# sed -i -e '/experimental/ s/^#//g' /etc/apt/sources.list.d/nvidia-container-toolkit.list
 apt update
 export NVIDIA_CONTAINER_TOOLKIT_VERSION=1.19.1-1
   apt install -y \
@@ -167,7 +167,9 @@ kubectl delete pod gpu-smoke
 ```
 
 6. **Configure firewall**
-  *Why:* TODO
+  *Why:* a public IP exposes K3s's cluster-internal ports,
+  API server (6443), kubelet (10250), Flannel VXLAN (8472), to the whole internet.
+  We don't need them except ssh for accessing the node and Traefik's 80/443 to access the liteLLM.
 
 ```sh
 # https://docs.k3s.io/installation/requirements?os=debian
@@ -196,7 +198,7 @@ ufw allow from 10.42.0.0/16
 ufw allow from 10.43.0.0/16
 # 5. enable
 ufw enable
-# TODO So configure firewallat the edge (Hetzner Robot firewall for dedicated servers):
+# TODO So configure firewall at the edge (Hetzner Robot firewall for dedicated servers):
 # * Default-deny inbound.
 # * Allow SSH (your port) — ideally from your IP/VPN, not the whole internet.
 # * Allow ICMP, and the return-traffic rule (the Robot firewall is stateless, so you allow inbound TCP with the ACK flag set for established connections — Hetzner's default template handles this).
@@ -266,7 +268,8 @@ kubectl delete -f cuda-vectoradd.yaml
 ```
 
 8. **Setup fluxcd**
-   *Why:* TODO
+  *Why:* GitOps. The repo is the single source of truth for the cluster state.
+  Flux continuously reconciles the cluster state with the desired state defined in the repo.
 
 ```sh
 # https://fluxcd.io/flux/installation/
@@ -290,79 +293,27 @@ flux bootstrap github \
   --personal
 kubectl get pods -n flux-system
 # git pull
+# Bootstap generates following flux resources. Defined in ./clusters/llm-platform/flux-system/gotk-sync.yaml
+kubectl get gitrepositories.source.toolkit.fluxcd.io -n flux-system flux-system
+kubectl get kustomizations.kustomize.toolkit.fluxcd.io -n flux-system flux-system
+flux version
 
 # Encrypting/Decrypting secrets using age
 # https://fluxcd.io/flux/guides/mozilla-sops/#encrypting-secrets-using-age
 age-keygen -o flux.agekey
+# Store this key safely (don't commit!).
 cat flux.agekey |
   kubectl create secret generic sops-age \
   --namespace=flux-system \
   --from-file=age.agekey=/dev/stdin
+# This secret is referenced in ./clusters/llm-platform/deploy.yaml to be used for decrypting secrets
 kubectl get secret -n flux-system sops-age -o yaml | yq '.data["age.agekey"]'
 
-# Verify
-flux get kustomizations
-flux get helmreleases -A
-# operator still healthy after adoption
-kubectl get pods -n gpu-operator
+# In ./clusters/llm-platform/deploy.yaml we define a Kustomization to sync resources defined under `deploy` directory.
+kubectl get kustomizations.kustomize.toolkit.fluxcd.io -n flux-system deploy
+
+# Reconcile all. Flux will deploy everything defined in `deploy` directory.
+flux reconcile kustomization flux-system --with-source
+# Once it is done, fetch everything
+flux get all -A
 ```
-
-<!--8. **Create the model-weights PVC** (K3s `local-path`, on NVMe)
-  *Why:* persist weights so pod restarts don't re-download ~17 GB.
-
-```sh
-
-```
-
-9. **Deploy vLLM** serving Qwen3.6-27B, requesting `nvidia.com/gpu: 1`, with
-  `--gpu-memory-utilization` tuned (and later `--enable-sleep-mode`)
-  *Why:* the model server. OpenAI-compatible API, continuous batching for
-  multi-user concurrency, and the `/metrics` that answer the concurrency question.
-
-```sh
-
-```
-
-10. **Deploy LiteLLM** (gateway)
-  *Why:* single front door — model-name routing, per-user keys, rate-limit,
-  logging, and the Anthropic↔OpenAI translation that Claude Code needs. vLLM is
-  never hit directly; only LiteLLM talks to it.
-
-```sh
-
-```
-
-11. **Configure Traefik Ingress + TLS** (cert-manager)
-    *Why:* one secured HTTPS endpoint for the dev-laptop tools. In-cluster agents
-    skip the Ingress and use the ClusterIP.
-
-```sh
-
-```
-
-12. **Deploy observability** — Prometheus + Grafana scraping DCGM + vLLM `/metrics`
-    (+ OTel for traces if wanted)
-    *Why:* this is the instrument of the POC — GPU utilization, KV-cache pressure,
-    preemptions, p95 latency. Without it you can't prove the concurrency ceiling.
-
-```sh
-
-```
-
-13. **Wire up the consumers**
-    - kagent: `ModelConfig` with `provider: OpenAI`, `openAI.baseUrl` → LiteLLM
-    - kubectl-ai / k8sgpt: OpenAI base URL → LiteLLM
-    - Claude Code: `ANTHROPIC_BASE_URL` → LiteLLM's Anthropic endpoint
-    *Why:* the actual workload under test.
-
-```sh
-
-```
-
-14. **(Later) Second model + sleep-mode switching**
-    *Why:* add gpt-oss-20b, enable Level-1 sleep (weights parked in your 64 GB RAM),
-    front with the switch controller — multi-model on one GPU without 2× VRAM.
-
-```sh
-
-```-->
