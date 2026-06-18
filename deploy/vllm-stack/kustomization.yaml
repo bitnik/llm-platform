@@ -1,5 +1,5 @@
 ---
-namespace: vllm
+namespace: vllm-stack
 resources:
 - namespace.yaml
 - hf-token.enc.yaml

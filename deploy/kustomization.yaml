@@ -1,4 +1,4 @@
 ---
 resources:
 - gpu-operator
-- vllm
+- vllm-stack
