@@ -1,0 +1,6 @@
+---
+namespace: cert-manager
+resources:
+- namespace.yaml
+- deploy.yaml
+- clusterissuers.yaml
