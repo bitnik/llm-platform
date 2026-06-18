@@ -108,3 +108,8 @@ spec:
           extraArgs:
           - "--served-model-name"
           - "gpt-oss-20b"
+          # Enable function calling
+          # https://docs.vllm.ai/projects/recipes/en/latest/OpenAI/GPT-OSS.html#function-calling
+          - "--tool-call-parser"
+          - "openai"
+          - "--enable-auto-tool-choice"
