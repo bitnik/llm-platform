@@ -1,4 +1,5 @@
 ---
+# https://docs.litellm.ai/docs/proxy/deploy#helm-chart
 # https://github.com/BerriAI/litellm/blob/litellm_internal_staging/helm/litellm/
 apiVersion: source.toolkit.fluxcd.io/v1
 kind: HelmRepository
@@ -43,7 +44,7 @@ spec:
       model_list:
       - model_name: gpt-oss
         litellm_params:
-          model: openai/gpt-oss
+          model: openai/gpt-oss-20b
           api_base: http://vllm-stack-router-service.vllm-stack.svc.cluster.local:80/v1
           api_key: dummy-not-used
           # arbitrary for self-hosted; for usage tracking
