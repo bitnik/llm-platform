@@ -3,3 +3,4 @@ namespace: vllm
 resources:
 - namespace.yaml
 - hf-token.enc.yaml
+- deploy.yaml
