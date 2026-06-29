@@ -1,0 +1,31 @@
+apiVersion: v1
+kind: Secret
+metadata:
+    name: kube-prometheus-stack-values
+    namespace: kube-prometheus-stack
+stringData:
+    values.yaml: ENC[AES256_GCM,data:yvm1uN3l3FAEswmCIiNwAHQPrCZgbVAXahf0X1Q2ueAQ5brui+cVLLiIRQ+qQFc+lA==,iv:QTJIq1p76Wwwts9nFLG4vPjrPrUYLt/Mv24E1Q+WYDk=,tag:9uqaf0ArdeLvc0MXZLXtNg==,type:str]
+sops:
+    age:
+        - enc: |
+            -----BEGIN AGE ENCRYPTED FILE-----
+            YWdlLWVuY3J5cHRpb24ub3JnL3YxCi0+IFgyNTUxOSBEWms1Qmo3Q3plbE5Hb2Vr
+            M2hDcitqOHdmbmlCckUraGJBSXVvOVFsT0J3CmcrT01LZmJnV3NiZk5oRjJaYmV5
+            azBhMlFMajltajZtam9NeDNoNm40eXcKLS0tIGU0bHY4VncxVjhGUkE1UjlwY2o3
+            VjViNTJ0UXp3WFZRRGNjUVVwSTd5UHcKie37/fM8eb2gUfKBqS1wwklKJGLIMkzJ
+            tQLXHqf1AjmpBuOqEhJae5nXJFcxMN6Qf/wPxhmPfvPaDFDGBUOJcA==
+            -----END AGE ENCRYPTED FILE-----
+          recipient: age1yltgwsnfxgstlyhf2ek9kcug0f6hw9dkhkang9kcdr77qgj8ay4qg6p3yy
+        - enc: |
+            -----BEGIN AGE ENCRYPTED FILE-----
+            YWdlLWVuY3J5cHRpb24ub3JnL3YxCi0+IFgyNTUxOSBWTDNnMlUzVW5tL3Y2cGJl
+            UmlLbzNWek4vOXBLc250VnVYVlNBZVZ3a1g0CjlIZGlEbDI2WExjU015c2lwZFZL
+            aSttNFIvU0wrTGphNnJOYkxaZE1vQlUKLS0tIEQvbTVqU1g0dDJoQmpiL3pTNURI
+            QmJmNC9TaHFFeWVUbkJzZjhkZXl1M0kKWMw67IsvHgzQ05+qz3rbxKg1+aEvBLJD
+            QzzdvYY/2bDkh0t1CO/u8eV8o+72uWt/JoX4FskgHBGEwUu8NLDN7Q==
+            -----END AGE ENCRYPTED FILE-----
+          recipient: age1983r92uvhyfsud6nvn5pjnv7jvkxx3wsfhu68j32ll8uqpnwmass90k80w
+    encrypted_regex: ^(data|stringData)$
+    lastmodified: "2026-06-29T11:49:36Z"
+    mac: ENC[AES256_GCM,data:btTWIPL/g5zftkbwNxLTZEFDTJO+YXcGfsvwfSFcnxkCkgpfaYk/c/y/H03nu7aRi72zA9ZDgwoBk8ESMQC3Br1Xotw9r6FoXQTPKmlK3abBgIfXWhjT+mEPbGSdNsSbmte9/65EmbJPrFFEK/Vbmq0cE/Nw+pLA0y3glrFpSVg=,iv:NqF/OOeq9avSkujCEuei7orXEmo9YAj1F6zWJD2S05A=,tag:ow4MZX+7JI6rRgjA6MYmwg==,type:str]
+    version: 3.13.1

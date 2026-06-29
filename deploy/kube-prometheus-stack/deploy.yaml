@@ -1,0 +1,89 @@
+---
+# https://github.com/prometheus-community/helm-charts/tree/main/charts/kube-prometheus-stack
+apiVersion: source.toolkit.fluxcd.io/v1
+kind: HelmRepository
+metadata:
+  name: kube-prometheus-stack
+  namespace: kube-prometheus-stack
+spec:
+  type: oci
+  interval: 1h
+  url: oci://ghcr.io/prometheus-community/charts/kube-prometheus-stack
+---
+apiVersion: helm.toolkit.fluxcd.io/v2
+kind: HelmRelease
+metadata:
+  name: kube-prometheus-stack
+  namespace: kube-prometheus-stack
+spec:
+  interval: 15m
+  # timeout: 15m
+  chart:
+    spec:
+      # helm show chart oci://ghcr.io/prometheus-community/charts/kube-prometheus-stack
+      chart: kube-prometheus-stack
+      version: "87.3.0"
+      sourceRef:
+        kind: HelmRepository
+        name: kube-prometheus-stack
+        namespace: kube-prometheus-stack
+  install:
+    remediation:
+      retries: 3
+  upgrade:
+    remediation:
+      retries: 3
+  valuesFrom:
+  - kind: Secret
+    name: kube-prometheus-stack-values
+  values:
+    prometheus:
+      prometheusSpec:
+        retention: 1w
+        resources:
+          requests:
+            cpu: 500m
+            memory: 1Gi
+            # limits:
+            #   memory: 1Gi
+        # Pick up ServiceMonitors from any namespace, not just same namespace
+        serviceMonitorSelectorNilUsesHelmValues: false
+        podMonitorSelectorNilUsesHelmValues: false
+        ruleSelectorNilUsesHelmValues: false
+        storageSpec:
+          volumeClaimTemplate:
+            spec:
+              storageClassName: local-path
+              accessModes:
+              - ReadWriteOnce
+              resources:
+                requests:
+                  storage: 50Gi
+
+    grafana:
+      persistence:
+        enabled: true
+        storageClassName: local-path
+        size: 5Gi
+      resources:
+        requests:
+          cpu: 250m
+          memory: 256Mi
+      # Auto-load dashboards from ConfigMaps
+      sidecar:
+        dashboards:
+          enabled: true
+          label: grafana_dashboard
+          labelValue: "1"
+
+    # Disable for the sake of simplicity
+    alertmanager:
+      enabled: false
+    kubeControllerManager:
+      enabled: false
+    kubeScheduler:
+      enabled: false
+    kubeEtcd:
+      enabled: false
+    kubeProxy:
+      enabled: false

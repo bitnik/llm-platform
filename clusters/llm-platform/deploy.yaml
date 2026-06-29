@@ -50,3 +50,22 @@ spec:
   sourceRef:
     kind: GitRepository
     name: flux-system
+  dependsOn:
+  - name: kube-prometheus-stack
+---
+apiVersion: kustomize.toolkit.fluxcd.io/v1
+kind: Kustomization
+metadata:
+  name: kube-prometheus-stack
+  namespace: flux-system
+spec:
+  interval: 10m0s
+  retryInterval: 2m0s
+  timeout: 5m
+  path: ./deploy/kube-prometheus-stack
+  prune: true
+  # Ready only once the chart (and its CRDs) are installed
+  wait: true
+  sourceRef:
+    kind: GitRepository
+    name: flux-system
