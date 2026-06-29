@@ -10,3 +10,4 @@ configMapGenerator:
   - config.yaml
 resources:
 - deploy.yaml
+- grafana-dashboards.yaml
