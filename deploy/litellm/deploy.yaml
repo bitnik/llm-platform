@@ -24,7 +24,7 @@ spec:
     spec:
       # helm show chart oci://ghcr.io/berriai/litellm-helm
       chart: litellm-helm
-      version: "1.89.2"
+      version: "1.90.0"
       sourceRef:
         kind: HelmRepository
         name: litellm
@@ -41,6 +41,7 @@ spec:
   values:
     replicaCount: 1
     logLevel: DEBUG
+    # https://docs.litellm.ai/docs/proxy/config_settings
     proxy_config:
       model_list:
       - model_name: gpt-oss-20b
@@ -53,6 +54,10 @@ spec:
           output_cost_per_token: 0.0000004 # $0.40 per 1M output tokens
       litellm_settings:
         drop_params: true
+        # If true, routes OpenAI /v1/messages requests through chat/completions instead of the Responses API.
+        # Response API with Streaming doesn't support Function Calling (wip),
+        # see https://docs.vllm.ai/projects/recipes/en/latest/OpenAI/GPT-OSS.html#harmony-format-support
+        use_chat_completions_url_for_anthropic_messages: true
       general_settings:
         master_key: os.environ/PROXY_MASTER_KEY
     db:
