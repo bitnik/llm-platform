@@ -39,6 +39,8 @@ spec:
   # https://docs.vllm.ai/projects/production-stack/en/latest/getting_started/quickstart.html
   # https://github.com/vllm-project/production-stack/blob/main/tutorials/assets/values-01-minimal-example.yaml
   values:
+    grafanaDashboards:
+      enabled: true
     routerSpec:
       serviceMonitor:
         enabled: true
