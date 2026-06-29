@@ -9,7 +9,6 @@ toolkit:
   # K3s auto-detected the runtime
   enabled: false
 
-# TODO
-# dcgmExporter:
-#   serviceMonitor:
-#     enabled: true
+dcgmExporter:
+  serviceMonitor:
+    enabled: true
