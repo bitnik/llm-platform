@@ -39,7 +39,12 @@ spec:
   # https://docs.vllm.ai/projects/production-stack/en/latest/getting_started/quickstart.html
   # https://github.com/vllm-project/production-stack/blob/main/tutorials/assets/values-01-minimal-example.yaml
   values:
+    routerSpec:
+      serviceMonitor:
+        enabled: true
     servingEngineSpec:
+      serviceMonitor:
+        enabled: true
       # We have 1 GPU
       strategy:
         type: Recreate
