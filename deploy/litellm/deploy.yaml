@@ -54,6 +54,7 @@ spec:
           output_cost_per_token: 0.0000004 # $0.40 per 1M output tokens
       litellm_settings:
         drop_params: true
+        require_auth_for_metrics_endpoint: false
         # If true, routes OpenAI /v1/messages requests through chat/completions instead of the Responses API.
         # Response API with Streaming doesn't support Function Calling (wip),
         # see https://docs.vllm.ai/projects/recipes/en/latest/OpenAI/GPT-OSS.html#harmony-format-support
