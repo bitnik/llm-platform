@@ -1,4 +1,11 @@
 ---
+# Note: This namespace is required for the HelmRepository.
+# If it is created in flux-system ns, then this namespace definition is not needed.
+apiVersion: v1
+kind: Namespace
+metadata:
+  name: kube-prometheus-stack
+---
 # https://github.com/prometheus-community/helm-charts/tree/main/charts/kube-prometheus-stack
 apiVersion: source.toolkit.fluxcd.io/v1
 kind: HelmRepository
