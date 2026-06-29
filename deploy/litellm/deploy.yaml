@@ -1,6 +1,6 @@
 ---
 # https://docs.litellm.ai/docs/proxy/deploy#helm-chart
-# https://github.com/BerriAI/litellm/blob/litellm_internal_staging/helm/litellm/
+# https://github.com/BerriAI/litellm/tree/litellm_internal_staging/deploy/charts/litellm-helm
 apiVersion: source.toolkit.fluxcd.io/v1
 kind: HelmRepository
 metadata:
@@ -40,6 +40,7 @@ spec:
     name: litellm-values
   values:
     replicaCount: 1
+    logLevel: DEBUG
     proxy_config:
       model_list:
       - model_name: gpt-oss-20b
