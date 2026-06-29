@@ -1,13 +1,18 @@
 ---
-# Copied from https://github.com/NVIDIA/gpu-usage-monitor/tree/main and replaced datasource ID,
-# which was hardcoded to "PBFA97CFB590B2093".
+# Copied from https://github.com/NVIDIA/gpu-usage-monitor/tree/main and replaced the hardcoded
+# datasource UID "PBFA97CFB590B2093" with "prometheus" (kube-prometheus-stack's default).
+# See also https://developer.nvidia.com/blog/get-real-time-visibility-into-gpu-usage-across-kubernetes-clusters/
 apiVersion: v1
 kind: ConfigMap
 metadata:
   name: grafana-dashboards
+  namespace: gpu-operator
   labels:
     grafana_dashboard: "1"
 data:
+  # Both dashboards share the same layout.
+  # The difference is in 5 panels (allocation %, running/pending GPU pods, inefficient pods):
+  # the non-lite version joins DCGM with kube-state-metrics; the lite version uses DCGM metrics alone.
   gpu-usage-dashboard.json: |
     {
       "annotations": {

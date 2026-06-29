@@ -9,6 +9,7 @@ toolkit:
   # K3s auto-detected the runtime
   enabled: false
 
+# https://developer.nvidia.com/dcgm
 dcgmExporter:
   serviceMonitor:
     enabled: true
