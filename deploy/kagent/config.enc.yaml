@@ -4,7 +4,7 @@ metadata:
     name: kagent-values
     namespace: kagent
 stringData:
-    values.yaml: ENC[AES256_GCM,data:kvdwXy50C9gbYVikTDoRZSMcVPu1yp68K2TqGNG7i1ODfaRWOrKR05RT4PaiySoKp5vRBDkDGOxgw8FAXutnvjbH4xRMwc6DybL0HVn1tMN0A/NE9KIt6HuGc2LvuV/4yS/vSAHyx+Yz1eVDNhk2m88gWP4u7kdqkhZYkjaYlV3YNmV8JDfFWQsLJUPbcHQhhmn4XZYXie9N3qi44Q==,iv:2EimowtyT3Q5bAi3vSHpMln7p/FW9gJ6dU3HgNqe0NQ=,tag:iTTDqMqPXAsKDGEhwQRG3w==,type:str]
+    values.yaml: ENC[AES256_GCM,data:GrKRRlo84dafahLZjub3KqS6b1q07kXMFbfJqZ9bKFPj/P9lESZVyBBY35mSwheKQ6i5jEkg+0NyRrDEJI/+gH9Og+zC7Y+aSRtw3Wwfomza/QInN5Esu0eJC4onwnNWVYPGoYGVBBfN2wMSJFYACx+k9MUZGvjCnm56fg90ZOu58ZCPxbXaijsg9XTnnOVTuNw4V9Nm7qBcvx2Me8yIs/PlodQLApfLzaF+ufBtGdvO,iv:27AR7iyrKHnTUnwbh0SnGQ8KzjVLAMSAnIiJDIeCooA=,tag:9gIGHl4vhm7Y+f62diyY0A==,type:str]
 sops:
     age:
         - enc: |
@@ -26,6 +26,6 @@ sops:
             -----END AGE ENCRYPTED FILE-----
           recipient: age1983r92uvhyfsud6nvn5pjnv7jvkxx3wsfhu68j32ll8uqpnwmass90k80w
     encrypted_regex: ^(data|stringData)$
-    lastmodified: "2026-06-30T10:33:27Z"
-    mac: ENC[AES256_GCM,data:4Fa5p3rQexSvWuYrcGLzBa/tjonoffGByEFxnHgKYj7Lv587x6dUKV/9KU2FHoewBdMqFqjagrCRsqaSvmocJwIglPr+TczANxNIHPX4m41zvBFPuF2hkmc0PCZWA7xZeYYHwJGUrmE+D6DCfB3G/ktC8BDiafb0LoNOWhp0ufg=,iv:/7OvyixQFHwcoQg2iQ8M3tne/N46OZgPJ6ScLJ+jpNw=,tag:8OVbxJoNX2BIJeIszhr5ng==,type:str]
+    lastmodified: "2026-06-30T10:37:01Z"
+    mac: ENC[AES256_GCM,data:MC/mE/NoZu3lH7tpyz91jvtkF3UysAt7yEHxY6HT9dysCZ7bJLoOoa7iJ8hkzCCDO9DXBAmcJtcgJfovs24se4CGkZL1x9VCGDvGvYJm6JDhPZ3kLwTILGXO6XQ/yEOjkaiBCd9x4he6FSqPvPU7uyGANSVU1vOjQz2+tM9Ha1k=,iv:6aYolqE1KM2uq/DOWPTRLDsiq2rYfBj7n5FXhCT/m9s=,tag:qpZXsRmJzkJjpZHYFLD2Rg==,type:str]
     version: 3.13.1
