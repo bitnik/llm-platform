@@ -182,7 +182,7 @@ curl -s https://$URL/v1/messages -H "Authorization: Bearer $MK" \
 ## Roadmap
 
 - [x] Observability: kube-prometheus-stack, DCGM, vLLM, LiteLLM metrics, grafana dashboards
-- [ ] OTel for traces
+- [ ] OTel for traces + enable alerts
 - [ ] Validate with kagent (in-cluster), kubectl-ai, k8sgpt, Claude Code
 - [ ] Configure LiteLLM users, keys, budgets, rate-limits (e.g. [terraform-provider-litellm](https://github.com/ncecere/terraform-provider-litellm), https://github.com/BerriAI/litellm/tree/litellm_internal_staging/terraform/litellm)
 - [ ] Second model + sleep/wake VRAM switching
