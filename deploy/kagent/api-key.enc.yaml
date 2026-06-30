@@ -1,0 +1,32 @@
+apiVersion: v1
+kind: Secret
+metadata:
+    name: kagent-openai
+    namespace: kagent
+stringData:
+    #ENC[AES256_GCM,data:gm2tsh+U2cSxLfO9pcrFOwXHhikD4w7d1JACDM9QXpuPj8GftwLiQkEQrp44J9b4vmdbFqhwexw3iv9dTsjWlKHqJJmYTZPRLw==,iv:QAMLoIn1jPmqkgS3Df1xw0tcySaifZFJdIh4ifsGT9g=,tag:yUQEtzjgJowsE1gUnCZTwA==,type:comment]
+    OPENAI_API_KEY: ENC[AES256_GCM,data:KDRtn354HRIFctLS5uRbUh8dCRU99bPP3R14RcpOrjDlYOpuhsA=,iv:xoTd+tk/DtzmKwBPgUq25xTbbAlRPkokQOahVeW39qg=,tag:eB1yuMwH39YKKRwddam8BQ==,type:str]
+sops:
+    age:
+        - enc: |
+            -----BEGIN AGE ENCRYPTED FILE-----
+            YWdlLWVuY3J5cHRpb24ub3JnL3YxCi0+IFgyNTUxOSBjTnlxd0grdlcwNCtLSkNJ
+            M2lhNFV3Y2xGUy96dzRnT3VCcEswcG1nZ2lvCmVGLyt5KzhGanB2bHFGVmI2d3ZD
+            NCtQdG9KQkxyV1hxRnlMTTJjSE0yRXMKLS0tIDNWTHVSREFLdnpkcjhCc2JlSDhP
+            SUovTHQ2eTg2ZDRwOVgrcnNyWGJjTGsK7XiQ7SD8K1Kbf6GktWMOPuB4TBDzP6Q3
+            VpbA7rQp0e5kWNcW/rYICnfKSRsv4M3E6mZuaF3StbFIxkd/iXAvog==
+            -----END AGE ENCRYPTED FILE-----
+          recipient: age1yltgwsnfxgstlyhf2ek9kcug0f6hw9dkhkang9kcdr77qgj8ay4qg6p3yy
+        - enc: |
+            -----BEGIN AGE ENCRYPTED FILE-----
+            YWdlLWVuY3J5cHRpb24ub3JnL3YxCi0+IFgyNTUxOSBjbHVBekljdUl3WXBUSVJP
+            QktXR1Y5OU5GbnFocUt0Wm1TSUJmdkZ0djBFClJPQ2p2bGRVWmFkczl0Zm40bUNM
+            ZTVwUWY2UC9ldW1HNURVVW14eXZrb2MKLS0tIFl6azJrUEJoUWVtRm04RGt3eXRK
+            YUxKMnBqNlk5endSajRUdEFXOG9UUmcK6llL4B2pe+hFRhBa6YBOWMYK6DDnoGAv
+            EFJ5KtjYV1/88f3DQP4f+L8cER6J84vnUdpNvz4ppIO0XJE/Dq+6Ng==
+            -----END AGE ENCRYPTED FILE-----
+          recipient: age1983r92uvhyfsud6nvn5pjnv7jvkxx3wsfhu68j32ll8uqpnwmass90k80w
+    encrypted_regex: ^(data|stringData)$
+    lastmodified: "2026-06-30T10:22:01Z"
+    mac: ENC[AES256_GCM,data:Me0vIQVp7fdF8bq69IMW65UvAmeNnzEIy0KYx+TzhDdMoVIebMvg2UFsJlCTjMCAtKuuUrwWoB3kNBxi/4YfPyZwUiZUswTwq17u3Jid5F+VKCNej9EANIerS351kPZte7qVEmV9zdrAW3hi3ODWUWY4AcXuewPpg9xExmh0X/w=,iv:D7x7W5Qgazun9pNGBAzIsWmSW6R9lwDw96/9ljKql2Y=,tag:1lQrCLL5OcoWPXOjT4xQrA==,type:str]
+    version: 3.13.1
