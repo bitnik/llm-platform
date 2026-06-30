@@ -2,4 +2,5 @@
 namespace: kagent
 resources:
 - config.enc.yaml
+- api-key.enc.yaml
 - deploy.yaml
