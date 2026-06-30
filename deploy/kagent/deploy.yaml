@@ -98,7 +98,9 @@ spec:
         # Pairs well with the --read-only CLI flag which disables write operations at the application layer.
         readOnly: true
         # readOnly still grants Secret read unless this is false. Keep false.
-        allowSecrets: false
+        # TODO:  The tool server can now read every Secret in the cluster (TLS keys, DB creds, your SOPS-decrypted values, the litellm master key)
+        #        Disable this again and allow only the secrets needed by the tool server using additionalRules.
+        allowSecrets: true
         # read-only ClusterRole covers core groups but NOT CRDs.
         # additionalRules:
         # - apiGroups: ["cilium.io"]
