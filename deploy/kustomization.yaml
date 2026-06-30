@@ -6,3 +6,4 @@ resources:
 - vllm-stack
 - litellm
 - traefik
+- kagent

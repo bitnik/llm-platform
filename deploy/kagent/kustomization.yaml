@@ -1,0 +1,5 @@
+---
+namespace: kagent
+resources:
+- config.enc.yaml
+- deploy.yaml
