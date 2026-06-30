@@ -79,3 +79,81 @@ spec:
         model: "gpt-oss-20b"
         apiKeySecretRef: kagent-openai
         apiKeySecretKey: OPENAI_API_KEY
+    # https://github.com/kagent-dev/tools/blob/main/helm/kagent-tools
+    # kagent-tools is the single component that executes tool calls against the cluster.
+    # All agents route their actions through it,
+    # so its ServiceAccount is the real privilege boundary.
+    # By default it is bound to cluster-admin.
+    kagent-tools:
+      tools:
+        # List of tool providers to enable. Empty list means all tools are enabled.
+        # Available: k8s, helm, istio, cilium, argo, prometheus, kubescape, utils
+        enabledTools: []
+        # Make tool server refuse to execute write tools
+        args:
+        - "--read-only"
+      rbac:
+        create: true
+        # When true, deploys a read-only ClusterRole (get, list, watch) instead of cluster-admin.
+        # Pairs well with the --read-only CLI flag which disables write operations at the application layer.
+        readOnly: true
+        # readOnly still grants Secret read unless this is false. Keep false.
+        allowSecrets: false
+        # read-only ClusterRole covers core groups but NOT CRDs.
+        # additionalRules:
+        # - apiGroups: ["cilium.io"]
+        #   resources: ["*"]
+        #   verbs: ["get","list","watch"]
+        # - apiGroups: ["monitoring.coreos.com"]
+        #   resources: ["*"]
+        #   verbs: ["get","list","watch"]
+        # - apiGroups: ["gateway.networking.k8s.io"]
+        #   resources: ["*"]
+        #   verbs: ["get","list","watch"]
+        # - apiGroups: ["kagent.dev"]
+        #   resources: ["*"]
+        #   verbs: ["get","list","watch"]
+    # Agents
+    # https://github.com/kagent-dev/kagent/tree/v0.9.10/helm/agents
+    # Every agent just consists of a model config + a system prompt + a list of tool names it's allowed to call.
+    # They hold no RBAC of their own.
+    # When an agent decides to act, it doesn't touch the cluster itself,
+    # it sends the tool call to the kagent-tools server,
+    # and that server executes against the Kubernetes API using its ServiceAccount.
+    k8s-agent:
+      enabled: true
+    kgateway-agent:
+      enabled: true
+    istio-agent:
+      enabled: false
+    promql-agent:
+      enabled: true
+    observability-agent:
+      enabled: true
+    argo-rollouts-agent:
+      enabled: false
+    helm-agent:
+      enabled: true
+    cilium-policy-agent:
+      enabled: true
+    cilium-manager-agent:
+      enabled: true
+    cilium-debug-agent:
+      enabled: true
+    # TODO
+    # otel:
+    #   tracing:
+    #     enabled: false
+    #     exporter:
+    #       otlp:
+    #         endpoint: ""
+    #         protocol: "grpc"
+    #         timeout: 15000 # milliseconds
+    #         insecure: true
+    #   logging:
+    #     enabled: false
+    #     exporter:
+    #       otlp:
+    #         endpoint: ""
+    #         timeout: 15000 # milliseconds
+    #         insecure: true
