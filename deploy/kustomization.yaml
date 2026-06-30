@@ -5,3 +5,4 @@ resources:
 - gpu-operator
 - vllm-stack
 - litellm
+- traefik

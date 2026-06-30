@@ -142,6 +142,10 @@ kubectl get runtimeclass
 # Check the generated containerd config if it references the nvidia runtime
 grep -A6 nvidia /var/lib/rancher/k3s/agent/etc/containerd/config.toml
 
+# k3s manages Traefik via its helm controller
+kubectl get helmcharts.helm.cattle.io -n kube-system
+ls -lah /var/lib/rancher/k3s/server/manifests/
+
 # Run end-to-end GPU test to see if it gets the GPU
 kubectl apply -f - <<'EOF'
 apiVersion: v1

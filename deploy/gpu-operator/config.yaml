@@ -9,6 +9,7 @@ toolkit:
   # K3s auto-detected the runtime
   enabled: false
 
+# DCGM Exporter exposes per-GPU hardware metrics
 # https://developer.nvidia.com/dcgm
 dcgmExporter:
   serviceMonitor:
