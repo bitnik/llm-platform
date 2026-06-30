@@ -88,6 +88,8 @@ spec:
             memory: 512Mi
       metrics:
         enabled: true
+        image:
+          repository: bitnamilegacy/postgres-exporter
         serviceMonitor:
           enabled: true
     # LiteLLM proxy resources
