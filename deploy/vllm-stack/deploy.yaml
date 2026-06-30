@@ -40,6 +40,7 @@ spec:
   # https://github.com/vllm-project/production-stack/blob/main/tutorials/assets/values-01-minimal-example.yaml
   values:
     grafanaDashboards:
+      # https://github.com/vllm-project/production-stack/tree/main/helm/dashboards
       enabled: true
     routerSpec:
       serviceMonitor:

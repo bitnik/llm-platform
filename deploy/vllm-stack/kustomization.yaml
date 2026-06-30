@@ -4,3 +4,4 @@ resources:
 - namespace.yaml
 - hf-token.enc.yaml
 - deploy.yaml
+- grafana-dashboard.yaml
