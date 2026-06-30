@@ -86,6 +86,10 @@ spec:
             memory: 256Mi
           limits:
             memory: 512Mi
+      metrics:
+        enabled: true
+        serviceMonitor:
+          enabled: true
     # LiteLLM proxy resources
     resources:
       requests:
