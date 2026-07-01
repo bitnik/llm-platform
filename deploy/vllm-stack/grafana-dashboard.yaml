@@ -8,8 +8,6 @@ metadata:
   labels:
     grafana_dashboard: "1"
 data:
-  # https://github.com/vllm-project/production-stack/blob/main/helm/dashboards/vllm-model-metrics-dashboard.json
-  # TODO: this dashboard is not included in chart version 0.1.11. Remove this file after upgrading to newer version.
   vllm-model-metrics-dashboard.json: |
     {
         "annotations": {
@@ -497,7 +495,7 @@ data:
               "type": "prometheus",
               "uid": "${DS_PROMETHEUS}"
             },
-            "description": "Number of requests in RUNNING, WAITING, and SWAPPED state",
+            "description": "Number of requests in RUNNING, and WAITING",
             "fieldConfig": {
               "defaults": {
                 "color": {
@@ -604,7 +602,7 @@ data:
                 "instant": false,
                 "legendFormat": "Num Waiting",
                 "range": true,
-                "refId": "C",
+                "refId": "B",
                 "useBackend": false
               }
             ],
@@ -1530,7 +1528,6 @@ data:
         "version": 8,
         "weekStart": ""
     }
-  # Get other dashboards from main branch too, instead of installing it via chart version 0.1.11, which has some bugs.
   vllm-dashboard.json: |
     {
       "annotations": {
@@ -2190,6 +2187,7 @@ data:
               "color": {
                 "mode": "palette-classic"
               },
+              "unit": "percentunit",
               "custom": {
                 "axisBorderShow": false,
                 "axisCenteredZero": false,
@@ -2391,6 +2389,7 @@ data:
               "color": {
                 "mode": "palette-classic"
               },
+              "unit": "percentunit",
               "custom": {
                 "axisBorderShow": false,
                 "axisCenteredZero": false,
