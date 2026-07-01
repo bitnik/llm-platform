@@ -79,6 +79,8 @@ spec:
         model: "gpt-oss-20b"
         apiKeySecretRef: kagent-openai
         apiKeySecretKey: OPENAI_API_KEY
+        config:
+          reasoningEffort: "high"
     # https://github.com/kagent-dev/tools/blob/main/helm/kagent-tools
     # kagent-tools is the single component that executes tool calls against the cluster.
     # All agents route their actions through it,
