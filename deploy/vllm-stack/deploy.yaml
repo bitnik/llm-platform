@@ -120,5 +120,5 @@ spec:
           # Enable support for calling user-defined functions
           # https://docs.vllm.ai/projects/recipes/en/latest/OpenAI/GPT-OSS.html#function-calling
           - "--tool-call-parser"
-          - "openai"
+          - "openai" # gpt-oss speaks the OpenAI harmony format, so use the "openai" parser
           - "--enable-auto-tool-choice"
