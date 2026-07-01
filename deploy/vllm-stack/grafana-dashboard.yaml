@@ -415,7 +415,7 @@ data:
                 },
                 "disableTextWrap": false,
                 "editorMode": "builder",
-                "expr": "histogram_quantile(0.99, sum by(le) (rate(vllm:time_per_output_token_seconds_bucket{model_name=\"$model_name\"}[$__rate_interval])))",
+                "expr": "histogram_quantile(0.99, sum by(le) (rate(vllm:request_time_per_output_token_seconds_bucket{model_name=\"$model_name\"}[$__rate_interval])))",
                 "fullMetaSearch": false,
                 "includeNullMetadata": false,
                 "instant": false,
@@ -431,7 +431,7 @@ data:
                 },
                 "disableTextWrap": false,
                 "editorMode": "builder",
-                "expr": "histogram_quantile(0.95, sum by(le) (rate(vllm:time_per_output_token_seconds_bucket{model_name=\"$model_name\"}[$__rate_interval])))",
+                "expr": "histogram_quantile(0.95, sum by(le) (rate(vllm:request_time_per_output_token_seconds_bucket{model_name=\"$model_name\"}[$__rate_interval])))",
                 "fullMetaSearch": false,
                 "hide": false,
                 "includeNullMetadata": false,
@@ -448,7 +448,7 @@ data:
                 },
                 "disableTextWrap": false,
                 "editorMode": "builder",
-                "expr": "histogram_quantile(0.9, sum by(le) (rate(vllm:time_per_output_token_seconds_bucket{model_name=\"$model_name\"}[$__rate_interval])))",
+                "expr": "histogram_quantile(0.9, sum by(le) (rate(vllm:request_time_per_output_token_seconds_bucket{model_name=\"$model_name\"}[$__rate_interval])))",
                 "fullMetaSearch": false,
                 "hide": false,
                 "includeNullMetadata": false,
@@ -465,7 +465,7 @@ data:
                 },
                 "disableTextWrap": false,
                 "editorMode": "builder",
-                "expr": "histogram_quantile(0.5, sum by(le) (rate(vllm:time_per_output_token_seconds_bucket{model_name=\"$model_name\"}[$__rate_interval])))",
+                "expr": "histogram_quantile(0.5, sum by(le) (rate(vllm:request_time_per_output_token_seconds_bucket{model_name=\"$model_name\"}[$__rate_interval])))",
                 "fullMetaSearch": false,
                 "hide": false,
                 "includeNullMetadata": false,
@@ -481,7 +481,7 @@ data:
                   "uid": "${DS_PROMETHEUS}"
                 },
                 "editorMode": "code",
-                "expr": "rate(vllm:time_per_output_token_seconds_sum{model_name=\"$model_name\"}[$__rate_interval])\n/\nrate(vllm:time_per_output_token_seconds_count{model_name=\"$model_name\"}[$__rate_interval])",
+                "expr": "rate(vllm:request_time_per_output_token_seconds_sum{model_name=\"$model_name\"}[$__rate_interval])\n/\nrate(vllm:request_time_per_output_token_seconds_count{model_name=\"$model_name\"}[$__rate_interval])",
                 "hide": false,
                 "instant": false,
                 "legendFormat": "Mean",
@@ -1920,7 +1920,7 @@ data:
           "targets": [
             {
               "editorMode": "builder",
-              "expr": "avg(vllm:time_per_output_token_seconds_sum) / avg(vllm:time_per_output_token_seconds_count)",
+              "expr": "avg(vllm:request_time_per_output_token_seconds_sum) / avg(vllm:request_time_per_output_token_seconds_count)",
               "legendFormat": "Avg ITL",
               "range": true,
               "refId": "A"
