@@ -41,7 +41,8 @@ spec:
   values:
     grafanaDashboards:
       # https://github.com/vllm-project/production-stack/tree/main/helm/dashboards
-      enabled: true
+      # See grafana-dashboard.yaml
+      enabled: false
     routerSpec:
       serviceMonitor:
         enabled: true
