@@ -76,7 +76,7 @@ spec:
       - name: "gptoss20b"
         repository: "vllm/vllm-openai"
         # vLLM engine version
-        tag: "v0.23.0"
+        tag: "v0.24.0"
         modelURL: "openai/gpt-oss-20b"
         replicaCount: 1
         requestCPU: 6
