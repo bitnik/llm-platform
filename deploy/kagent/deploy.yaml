@@ -104,23 +104,38 @@ spec:
         allowSecrets: true
         # read-only ClusterRole covers core groups but NOT CRDs.
         additionalRules:
+        # - apiGroups:
+        #   - "cilium.io"
+        #   resources:
+        #   - "*"
+        #   verbs:
+        #   - "get"
+        #   - "list"
+        #   - "watch"
         - apiGroups:
-          - "cilium.io"
+          - "monitoring.coreos.com"
           resources:
           - "*"
           verbs:
           - "get"
           - "list"
           - "watch"
-          # - apiGroups: ["monitoring.coreos.com"]
-          #   resources: ["*"]
-          #   verbs: ["get","list","watch"]
-          # - apiGroups: ["gateway.networking.k8s.io"]
-          #   resources: ["*"]
-          #   verbs: ["get","list","watch"]
-          # - apiGroups: ["kagent.dev"]
-          #   resources: ["*"]
-          #   verbs: ["get","list","watch"]
+          # - apiGroups:
+          #   - "gateway.networking.k8s.io"
+          #   resources:
+          #   - "*"
+          #   verbs:
+          #   - "get"
+          #   - "list"
+          #   - "watch"
+          # - apiGroups:
+          #   - "kagent.dev"
+          #   resources:
+          #   - "*"
+          #   verbs:
+          #   - "get"
+          #   - "list"
+          #   - "watch"
     # Agents
     # https://github.com/kagent-dev/kagent/tree/v0.9.10/helm/agents
     # Every agent just consists of a model config + a system prompt + a list of tool names it's allowed to call.
