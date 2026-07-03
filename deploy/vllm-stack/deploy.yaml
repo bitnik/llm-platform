@@ -123,13 +123,56 @@ spec:
       #     - "openai" # gpt-oss speaks the OpenAI harmony format, so use the "openai" parser
       #     - "--enable-auto-tool-choice"
       #
-      # https://huggingface.co/QuantTrio/Qwen3.6-27B-AWQ
-      # https://docs.vllm.ai/projects/recipes/en/latest/Qwen/Qwen3.5.html
-      # AWQ 4-bit quant of Qwen3.6-27B: weights are ~15 GiB, which fits our 20 GiB card.
-      - name: "qwen36-27b"
+      # # https://huggingface.co/QuantTrio/Qwen3.6-27B-AWQ
+      # # https://docs.vllm.ai/projects/recipes/en/latest/Qwen/Qwen3.5.html
+      # # AWQ 4-bit quant of Qwen3.6-27B: weights are ~15 GiB, which fits our 20 GiB card.
+      # - name: "qwen36-27b"
+      #   repository: "vllm/vllm-openai"
+      #   tag: "v0.24.0"
+      #   modelURL: "QuantTrio/Qwen3.6-27B-AWQ"
+      #   replicaCount: 1
+      #   requestCPU: 6
+      #   requestMemory: "16Gi"
+      #   requestGPU: 1
+      #   # Optional resource limits - if not specified, only GPU will have a limit
+      #   # limitCPU: "8"
+      #   # limitMemory: "32Gi"
+      #   # NOT mig. Our card has no MIG
+      #   requestGPUType: "nvidia.com/gpu"
+      #   storageClass: "local-path"
+      #   pvcStorage: "40Gi"
+      #   hf_token:
+      #     secretName: "hf-token"
+      #     secretKey: "token"
+      #   vllmConfig:
+      #     # https://huggingface.co/QuantTrio/Qwen3.6-27B-AWQ#%E3%80%90vllm-startup-command%E3%80%91
+      #     # --max-model-len represents the context length, which is the maximum value of the input plus output for a single request.
+      #     # vLLM pre-reserves KV cache for the full context at startup.
+      #     maxModelLen: 32768
+      #     # --gpu-memory-utilization represents the proportion of HBM that vLLM will use for actual inference.
+      #     # Its essential function is to calculate the available kv_cache size.
+      #     gpuMemoryUtilization: 0.9
+      #     extraArgs:
+      #     - "--served-model-name"
+      #     - "qwen3.6-27b"
+      #     - "--tool-call-parser"
+      #     - "qwen3_coder"
+      #     - "--enable-auto-tool-choice"
+      #     - "--reasoning-parser"
+      #     - "qwen3"
+      #     # - "--trust-remote-code"
+      #     # - "--max-num-seqs"
+      #     # - "16"
+      #     # - "--swap-space"
+      #     # - "4"
+      #     # - "--language-model-only"
+      #     # - "--enforce-eager"
+      #
+      # https://huggingface.co/mistralai/Devstral-Small-2-24B-Instruct-2512
+      - name: "devstral-small-2-24b"
         repository: "vllm/vllm-openai"
         tag: "v0.24.0"
-        modelURL: "QuantTrio/Qwen3.6-27B-AWQ"
+        modelURL: "mistralai/Devstral-Small-2-24B-Instruct-2512"
         replicaCount: 1
         requestCPU: 6
         requestMemory: "16Gi"
@@ -145,25 +188,16 @@ spec:
           secretName: "hf-token"
           secretKey: "token"
         vllmConfig:
-          # https://huggingface.co/QuantTrio/Qwen3.6-27B-AWQ#%E3%80%90vllm-startup-command%E3%80%91
-          # --max-model-len represents the context length, which is the maximum value of the input plus output for a single request.
-          # vLLM pre-reserves KV cache for the full context at startup.
-          maxModelLen: 32768
+          # https://huggingface.co/mistralai/Devstral-Small-2-24B-Instruct-2512#vllm-recommended
+          maxModelLen: 262144
           # --gpu-memory-utilization represents the proportion of HBM that vLLM will use for actual inference.
           # Its essential function is to calculate the available kv_cache size.
           gpuMemoryUtilization: 0.9
           extraArgs:
           - "--served-model-name"
-          - "qwen3.6-27b"
+          - "devstral-small-2-24b"
           - "--tool-call-parser"
-          - "qwen3_coder"
+          - "mistral"
           - "--enable-auto-tool-choice"
-          - "--reasoning-parser"
-          - "qwen3"
-          # - "--trust-remote-code"
-          # - "--max-num-seqs"
-          # - "16"
-          # - "--swap-space"
-          # - "4"
-          - "--language-model-only"
-          - "--enforce-eager"
+          # - "--reasoning-parser"
+          # - ""

@@ -53,9 +53,18 @@ spec:
       #     # arbitrary for self-hosted; for usage tracking
       #     input_cost_per_token: 0.0000002 # $0.20 per 1M input tokens
       #     output_cost_per_token: 0.0000004 # $0.40 per 1M output tokens
-      - model_name: qwen3.6-27b
+      # - model_name: qwen3.6-27b
+      #   litellm_params:
+      #     model: QuantTrio/Qwen3.6-27B-AWQ
+      #     api_base: http://vllm-stack-router-service.vllm-stack.svc.cluster.local:80/v1
+      #     api_key: dummy-not-used
+      #     reasoning_effort: "high"
+      #     # arbitrary for self-hosted; for usage tracking
+      #     input_cost_per_token: 0.0000002 # $0.20 per 1M input tokens
+      #     output_cost_per_token: 0.0000004 # $0.40 per 1M output tokens
+      - model_name: devstral-small-2-24b
         litellm_params:
-          model: QuantTrio/Qwen3.6-27B-AWQ
+          model: mistralai/Devstral-Small-2-24B-Instruct-2512
           api_base: http://vllm-stack-router-service.vllm-stack.svc.cluster.local:80/v1
           api_key: dummy-not-used
           reasoning_effort: "high"
