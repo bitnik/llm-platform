@@ -167,16 +167,28 @@ URL=$(kubectl get ingress -n litellm litellm -o yaml | yq '.spec.tls.0.hosts.0')
 
 # list available models
 curl -s https://$URL/v1/models -H "Authorization: Bearer $MK" | jq '.data[].id'
+# MODEL="gpt-oss-20b"
+MODEL="devstral-small-2-24b-awq-4bit"
 
 # OpenAI protocol
 curl -s https://$URL/v1/chat/completions -H "Authorization: Bearer $MK" \
   -H 'content-type: application/json' \
-  -d '{"model":"gpt-oss-20b","max_tokens":300,"messages":[{"role":"user","content":"reply with one short sentence"}]}' | jq
+  -d '{"model":"'"$MODEL"'","max_tokens":300,"messages":[{"role":"user","content":"reply with one short sentence"}]}' | jq
 
 # Anthropic protocol
 curl -s https://$URL/v1/messages -H "Authorization: Bearer $MK" \
   -H 'content-type: application/json' \
-  -d '{"model":"gpt-oss-20b","max_tokens":300,"messages":[{"role":"user","content":"Explain what Kubernetes is in two sentences."}]}' | jq
+  -d '{"model":"'"$MODEL"'","max_tokens":300,"messages":[{"role":"user","content":"Explain what Kubernetes is in two sentences."}]}' | jq
+
+# Set reasoning effort low (default is change to high in litellm config)
+curl -s https://$URL/v1/messages -H "Authorization: Bearer $MK" \
+  -H 'Content-Type: application/json' \
+  -d '{
+    "model": "'"$MODEL"'",
+    "messages": [{"role":"user","content":"Explain what Kubernetes is in two sentences."}],
+    "reasoning_effort": "low",
+    "max_tokens": 1024
+  }' | jq
 ```
 
 ## Roadmap
