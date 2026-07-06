@@ -7,8 +7,14 @@ repos:
     language: system
     # TODO: `just check` covers the whole files, not only committed ones.
     pass_filenames: false
-    files: "\\.enc\\.(ya?ml|json|env|md)$"
+    files: "\\.enc\\.(ya?ml|json|env|md|tfvars)$"
     entry: just check
+  - id: tofu-fmt
+    name: Run tofu fmt check
+    language: system
+    pass_filenames: false
+    # files: ""
+    entry: just tofufmt check
 - repo: https://github.com/editorconfig-checker/editorconfig-checker.python
   rev: "3.6.1"
   hooks:
