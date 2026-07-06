@@ -123,13 +123,15 @@ spec:
       #     - "openai" # gpt-oss speaks the OpenAI harmony format, so use the "openai" parser
       #     - "--enable-auto-tool-choice"
       #
-      # # https://huggingface.co/QuantTrio/Qwen3.6-27B-AWQ
+      # # https://huggingface.co/Qwen/Qwen3.6-27B
+      # # https://huggingface.co/cyankiwi/Qwen3.6-27B-AWQ-INT4
       # # https://docs.vllm.ai/projects/recipes/en/latest/Qwen/Qwen3.5.html
-      # # AWQ 4-bit quant of Qwen3.6-27B: weights are ~15 GiB, which fits our 20 GiB card.
-      # - name: "qwen36-27b"
+      # # AWQ 4-bit quant of Qwen3.6-27B: weights are ~15 GiB, which fits our 20 GiB card. -> NO, it doesn't! Its total weight size is ~20.5 GB.
+      # # - name: "qwen36-27b"
+      # - name: "qwen36-27b-awq"
       #   repository: "vllm/vllm-openai"
       #   tag: "v0.24.0"
-      #   modelURL: "QuantTrio/Qwen3.6-27B-AWQ"
+      #   modelURL: "cyankiwi/Qwen3.6-27B-AWQ-INT4"
       #   replicaCount: 1
       #   requestCPU: 6
       #   requestMemory: "16Gi"
@@ -154,7 +156,7 @@ spec:
       #     gpuMemoryUtilization: 0.9
       #     extraArgs:
       #     - "--served-model-name"
-      #     - "qwen3.6-27b"
+      #     - "qwen3.6-27b-awq"
       #     - "--tool-call-parser"
       #     - "qwen3_coder"
       #     - "--enable-auto-tool-choice"
@@ -198,7 +200,7 @@ spec:
           # Model supports 384k ctx (YARN), but KV cache is the constraint on 20GB (GPU VRAM size).
           # Budget: (20GB * 0.95 util) - ~16.1GB weights - ~1.5GB overhead = ~1.5-2GB for KV.
           # This arch = 0.078 MiB/token at fp8 KV, so 20k tokens ~= 1.56GB.
-          maxModelLen: 20000
+          maxModelLen: 10000
           # Fraction of the 20GB card vLLM may use.
           # Whatever's left after weights + overhead becomes the KV cache pool.
           # 0.95 is safe on a dedicated GPU node.
