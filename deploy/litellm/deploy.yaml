@@ -55,7 +55,7 @@ spec:
       #     output_cost_per_token: 0.0000004 # $0.40 per 1M output tokens
       # - model_name: qwen3.6-27b
       #   litellm_params:
-      #     model: QuantTrio/Qwen3.6-27B-AWQ
+      #     model: openai/Qwen3.6-27B-AWQ
       #     api_base: http://vllm-stack-router-service.vllm-stack.svc.cluster.local:80/v1
       #     api_key: dummy-not-used
       #     reasoning_effort: "high"
@@ -65,8 +65,8 @@ spec:
       # - model_name: devstral-small-2-24b
       - model_name: devstral-small-2-24b-awq-4bit
         litellm_params:
-          # model: mistralai/Devstral-Small-2-24B-Instruct-2512
-          model: cyankiwi/Devstral-Small-2-24B-Instruct-2512-AWQ-4bit
+          # model: openai/devstral-small-2-24b
+          model: openai/devstral-small-2-24b-awq-4bit
           api_base: http://vllm-stack-router-service.vllm-stack.svc.cluster.local:80/v1
           api_key: dummy-not-used
           reasoning_effort: "high"
