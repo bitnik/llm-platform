@@ -71,57 +71,57 @@ spec:
       #   requestGPUType: "nvidia.com/gpu"
       #   storageClass: "local-path"
       #
-      # # https://huggingface.co/openai/gpt-oss-20b
-      # # https://docs.vllm.ai/projects/recipes/en/latest/OpenAI/GPT-OSS.html
-      # - name: "gptoss20b"
-      #   repository: "vllm/vllm-openai"
-      #   # vLLM engine version
-      #   tag: "v0.24.0"
-      #   modelURL: "openai/gpt-oss-20b"
-      #   replicaCount: 1
-      #   requestCPU: 6
-      #   requestMemory: "16Gi"
-      #   requestGPU: 1
-      #   # Optional resource limits - if not specified, only GPU will have a limit
-      #   # limitCPU: "8"
-      #   # limitMemory: "32Gi"
-      #   # NOT mig. Our card has no MIG
-      #   requestGPUType: "nvidia.com/gpu"
-      #   storageClass: "local-path"
-      #   pvcStorage: "60Gi"
-      #   hf_token:
-      #     secretName: "hf-token"
-      #     secretKey: "token"
-      #   vllmConfig:
-      #     # Error:
-      #     # > (EngineCore pid=239) ValueError: To serve at least one request with the model's max seq len (131072),
-      #     # > (3.05 GiB KV cache is needed, which is larger than the available KV cache memory (2.62 GiB).
-      #     # > Based on the available memory, the estimated maximum model length is 112208.
-      #     # > Try increasing `gpu_memory_utilization` (which also controls CPU memory on the CPU backend) or
-      #     # > decreasing `max_model_len` when initializing the engine.
-      #     # > See https://docs.vllm.ai/en/latest/configuration/conserving_memory/ for more details.
-      #     #
-      #     # --max-model-len represents the context length, which is the maximum value of the input plus output for a single request.
-      #     # vLLM pre-reserves KV cache for the full context at startup.
-      #     # > (APIServer pid=1) INFO 06-18 11:27:23 [model.py:1745] Using max model len 131072
-      #     maxModelLen: 65536 # 131072/2=65536 tokens (64K context)
-      #     # --gpu-memory-utilization represents the proportion of HBM that vLLM will use for actual inference.
-      #     # Its essential function is to calculate the available kv_cache size.
-      #     # > (EngineCore pid=239) INFO 06-18 11:31:55 [gpu_model_runner.py:5187] Model loading took 13.8 GiB memory and 117.712730 seconds
-      #     # Model weights is ~13.8 GiB, whatever's left is KV cache.
-      #     gpuMemoryUtilization: 0.92
-      #     #
-      #     # budget = 20GB * 0.92 ≈ 18.4 GiB
-      #     # KV pool = budget − weights − CUDA graphs − activations/overhead ≈ 2.62 GiB
-      #     #         ≈ 18.4   − 13.8    − 0.39        − ~1.6
-      #     extraArgs:
-      #     - "--served-model-name"
-      #     - "gpt-oss-20b"
-      #     # Enable support for calling user-defined functions
-      #     # https://docs.vllm.ai/projects/recipes/en/latest/OpenAI/GPT-OSS.html#function-calling
-      #     - "--tool-call-parser"
-      #     - "openai" # gpt-oss speaks the OpenAI harmony format, so use the "openai" parser
-      #     - "--enable-auto-tool-choice"
+      # https://huggingface.co/openai/gpt-oss-20b
+      # https://docs.vllm.ai/projects/recipes/en/latest/OpenAI/GPT-OSS.html
+      - name: "gptoss20b"
+        repository: "vllm/vllm-openai"
+        # vLLM engine version
+        tag: "v0.24.0"
+        modelURL: "openai/gpt-oss-20b"
+        replicaCount: 1
+        requestCPU: 6
+        requestMemory: "16Gi"
+        requestGPU: 1
+        # Optional resource limits - if not specified, only GPU will have a limit
+        # limitCPU: "8"
+        # limitMemory: "32Gi"
+        # NOT mig. Our card has no MIG
+        requestGPUType: "nvidia.com/gpu"
+        storageClass: "local-path"
+        pvcStorage: "60Gi"
+        hf_token:
+          secretName: "hf-token"
+          secretKey: "token"
+        vllmConfig:
+          # Error:
+          # > (EngineCore pid=239) ValueError: To serve at least one request with the model's max seq len (131072),
+          # > (3.05 GiB KV cache is needed, which is larger than the available KV cache memory (2.62 GiB).
+          # > Based on the available memory, the estimated maximum model length is 112208.
+          # > Try increasing `gpu_memory_utilization` (which also controls CPU memory on the CPU backend) or
+          # > decreasing `max_model_len` when initializing the engine.
+          # > See https://docs.vllm.ai/en/latest/configuration/conserving_memory/ for more details.
+          #
+          # --max-model-len represents the context length, which is the maximum value of the input plus output for a single request.
+          # vLLM pre-reserves KV cache for the full context at startup.
+          # > (APIServer pid=1) INFO 06-18 11:27:23 [model.py:1745] Using max model len 131072
+          maxModelLen: 65536 # 131072/2=65536 tokens (64K context)
+          # --gpu-memory-utilization represents the proportion of HBM that vLLM will use for actual inference.
+          # Its essential function is to calculate the available kv_cache size.
+          # > (EngineCore pid=239) INFO 06-18 11:31:55 [gpu_model_runner.py:5187] Model loading took 13.8 GiB memory and 117.712730 seconds
+          # Model weights is ~13.8 GiB, whatever's left is KV cache.
+          gpuMemoryUtilization: 0.92
+          #
+          # budget = 20GB * 0.92 ≈ 18.4 GiB
+          # KV pool = budget − weights − CUDA graphs − activations/overhead ≈ 2.62 GiB
+          #         ≈ 18.4   − 13.8    − 0.39        − ~1.6
+          extraArgs:
+          - "--served-model-name"
+          - "gpt-oss-20b"
+          # Enable support for calling user-defined functions
+          # https://docs.vllm.ai/projects/recipes/en/latest/OpenAI/GPT-OSS.html#function-calling
+          - "--tool-call-parser"
+          - "openai" # gpt-oss speaks the OpenAI harmony format, so use the "openai" parser
+          - "--enable-auto-tool-choice"
       #
       # # https://huggingface.co/QuantTrio/Qwen3.6-27B-AWQ
       # # https://docs.vllm.ai/projects/recipes/en/latest/Qwen/Qwen3.5.html
@@ -168,36 +168,36 @@ spec:
       #     # - "--language-model-only"
       #     # - "--enforce-eager"
       #
-      # https://huggingface.co/mistralai/Devstral-Small-2-24B-Instruct-2512
-      - name: "devstral-small-2-24b"
-        repository: "vllm/vllm-openai"
-        tag: "v0.24.0"
-        modelURL: "mistralai/Devstral-Small-2-24B-Instruct-2512"
-        replicaCount: 1
-        requestCPU: 6
-        requestMemory: "16Gi"
-        requestGPU: 1
-        # Optional resource limits - if not specified, only GPU will have a limit
-        # limitCPU: "8"
-        # limitMemory: "32Gi"
-        # NOT mig. Our card has no MIG
-        requestGPUType: "nvidia.com/gpu"
-        storageClass: "local-path"
-        pvcStorage: "40Gi"
-        hf_token:
-          secretName: "hf-token"
-          secretKey: "token"
-        vllmConfig:
-          # https://huggingface.co/mistralai/Devstral-Small-2-24B-Instruct-2512#vllm-recommended
-          maxModelLen: 262144
-          # --gpu-memory-utilization represents the proportion of HBM that vLLM will use for actual inference.
-          # Its essential function is to calculate the available kv_cache size.
-          gpuMemoryUtilization: 0.9
-          extraArgs:
-          - "--served-model-name"
-          - "devstral-small-2-24b"
-          - "--tool-call-parser"
-          - "mistral"
-          - "--enable-auto-tool-choice"
-          # - "--reasoning-parser"
-          # - ""
+      # # https://huggingface.co/mistralai/Devstral-Small-2-24B-Instruct-2512
+      # - name: "devstral-small-2-24b"
+      #   repository: "vllm/vllm-openai"
+      #   tag: "v0.24.0"
+      #   modelURL: "mistralai/Devstral-Small-2-24B-Instruct-2512"
+      #   replicaCount: 1
+      #   requestCPU: 6
+      #   requestMemory: "16Gi"
+      #   requestGPU: 1
+      #   # Optional resource limits - if not specified, only GPU will have a limit
+      #   # limitCPU: "8"
+      #   # limitMemory: "32Gi"
+      #   # NOT mig. Our card has no MIG
+      #   requestGPUType: "nvidia.com/gpu"
+      #   storageClass: "local-path"
+      #   pvcStorage: "40Gi"
+      #   hf_token:
+      #     secretName: "hf-token"
+      #     secretKey: "token"
+      #   vllmConfig:
+      #     # https://huggingface.co/mistralai/Devstral-Small-2-24B-Instruct-2512#vllm-recommended
+      #     maxModelLen: 262144
+      #     # --gpu-memory-utilization represents the proportion of HBM that vLLM will use for actual inference.
+      #     # Its essential function is to calculate the available kv_cache size.
+      #     gpuMemoryUtilization: 0.9
+      #     extraArgs:
+      #     - "--served-model-name"
+      #     - "devstral-small-2-24b"
+      #     - "--tool-call-parser"
+      #     - "mistral"
+      #     - "--enable-auto-tool-choice"
+      #     # - "--reasoning-parser"
+      #     # - ""
