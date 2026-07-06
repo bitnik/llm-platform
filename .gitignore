@@ -1,2 +1,8 @@
 local/
 flux.agekey
+
+# OpenTofu — state contains generated LiteLLM keys, never commit
+.terraform/
+tfplan
+*.tfstate
+*.tfstate.*

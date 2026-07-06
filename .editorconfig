@@ -15,3 +15,12 @@ indent_size = 2
 # YAML file
 [*.{yml,yaml,yamlfmt}]
 indent_size = 2
+
+# tfvars files
+[*.tfvars]
+indent_style = space
+indent_size = 2
+
+# encrypted tfvars files
+[*.enc.tfvars]
+indent_style = tab

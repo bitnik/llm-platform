@@ -69,6 +69,7 @@ deploy/                 Apps reconciled by Flux:
   ├─ gpu-operator/         NVIDIA GPU Operator (device plugin, DCGM)
   ├─ vllm-stack/           vLLM model serving
   └─ litellm/              LiteLLM gateway
+tofu/litellm/           LiteLLM teams/users/keys/budgets managed with OpenTofu
 .sops.yaml              SOPS rules (age recipients allowed to decrypt)
 justfile                Task runner, run `just` to list targets
 ```
@@ -105,7 +106,8 @@ Install:
 * [`just`](https://github.com/casey/just) (task runner),
 * [`pre-commit`](https://pre-commit.com/),
 * [`sops`](https://getsops.io/) and [`age`](https://github.com/FiloSottile/age) (for secrets),
-* [`flux`](https://fluxcd.io/flux/installation/) and `kubectl` (for cluster management).
+* [`flux`](https://fluxcd.io/flux/installation/) and `kubectl` (for cluster management),
+* [`tofu`](https://opentofu.org/docs/intro/install/) (for LiteLLM access management).
 
 Run `just` to see all targets.
 
@@ -121,7 +123,7 @@ pre-commit install
 pre-commit run --all-files
 # just pre-commit
 # auto-format YAML files
-just fmt
+just yamlfmt
 ```
 
 ### Secrets
@@ -159,29 +161,33 @@ kubectl get gitrepositories,kustomizations,helmreleases -A
 ## Usage
 
 The LiteLLM gateway is reachable over HTTPS via Ingress.
-Authenticate with a LiteLLM key, below uses the master key for convenience (See [Roadmap](#roadmap)).
+Authenticate with a LiteLLM key.
+Personal / workload keys (with budgets and rate-limits) are managed with OpenTofu,
+see [tofu/litellm](tofu/litellm).
 
 ```sh
-MK=$(kubectl -n litellm get secret litellm-masterkey -o jsonpath='{.data.masterkey}' | base64 -d)
+LITELLM_KEY=""
+# You can use the master key for convenience.
+# LITELLM_KEY=$(kubectl -n litellm get secret litellm-masterkey -o jsonpath='{.data.masterkey}' | base64 -d)
 URL=$(kubectl get ingress -n litellm litellm -o yaml | yq '.spec.tls.0.hosts.0')
 
 # list available models
-curl -s https://$URL/v1/models -H "Authorization: Bearer $MK" | jq '.data[].id'
+curl -s https://$URL/v1/models -H "Authorization: Bearer $LITELLM_KEY" | jq '.data[].id'
 # MODEL="gpt-oss-20b"
 MODEL="devstral-small-2-24b-awq-4bit"
 
 # OpenAI protocol
-curl -s https://$URL/v1/chat/completions -H "Authorization: Bearer $MK" \
+curl -s https://$URL/v1/chat/completions -H "Authorization: Bearer $LITELLM_KEY" \
   -H 'content-type: application/json' \
   -d '{"model":"'"$MODEL"'","max_tokens":300,"messages":[{"role":"user","content":"reply with one short sentence"}]}' | jq
 
 # Anthropic protocol
-curl -s https://$URL/v1/messages -H "Authorization: Bearer $MK" \
+curl -s https://$URL/v1/messages -H "Authorization: Bearer $LITELLM_KEY" \
   -H 'content-type: application/json' \
   -d '{"model":"'"$MODEL"'","max_tokens":300,"messages":[{"role":"user","content":"Explain what Kubernetes is in two sentences."}]}' | jq
 
 # Set reasoning effort low (default is change to high in litellm config)
-curl -s https://$URL/v1/messages -H "Authorization: Bearer $MK" \
+curl -s https://$URL/v1/messages -H "Authorization: Bearer $LITELLM_KEY" \
   -H 'Content-Type: application/json' \
   -d '{
     "model": "'"$MODEL"'",
@@ -196,6 +202,6 @@ curl -s https://$URL/v1/messages -H "Authorization: Bearer $MK" \
 - [x] Observability: kube-prometheus-stack, DCGM, vLLM, LiteLLM metrics, grafana dashboards
 - [ ] OTel for traces + enable alerts
 - [x] Validate with kagent (in-cluster), kubectl-ai, k8sgpt, Claude Code, pi agent
-- [ ] Configure LiteLLM users, keys, budgets, rate-limits (e.g. [terraform-provider-litellm](https://github.com/ncecere/terraform-provider-litellm), https://github.com/BerriAI/litellm/tree/litellm_internal_staging/terraform/litellm)
-- [ ] Second model + sleep/wake VRAM switching
+- [x] Configure LiteLLM users, keys, budgets, rate-limits with OpenTofu + [terraform-provider-litellm](https://github.com/ncecere/terraform-provider-litellm), see [tofu/litellm](tofu/litellm)
+- [ ] Second model + sleep/wake VRAM switching (See https://docs.vllm.ai/projects/production-stack/en/latest/use_cases/sleep-wakeup-mode.html)
 - [ ] Automated E2E tests in GitHub Actions (reliability checks). Add a “sleep" API test (Validate that  the PVC hot-load switch works).
