@@ -76,7 +76,8 @@ spec:
       default: openAI
       openAI:
         provider: OpenAI
-        model: "gpt-oss-20b"
+        # model: "gpt-oss-20b"
+        model: "devstral-small-2-24b-awq-4bit"
         apiKeySecretRef: kagent-openai
         apiKeySecretKey: OPENAI_API_KEY
         config:
