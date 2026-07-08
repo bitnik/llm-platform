@@ -1,0 +1,28 @@
+---
+# Replaces the chart's ServiceMonitor (serviceMonitor.enabled=false in
+# deploy.yaml). /metrics requires auth (require_auth_for_metrics_endpoint),
+# because the public Ingress exposes it and LiteLLM metric labels include
+# team/key aliases and spend. The chart template cannot send credentials,
+# so scrape with a bearer token here.
+# TODO: use a dedicated low-privilege LiteLLM key instead of the master key.
+apiVersion: monitoring.coreos.com/v1
+kind: ServiceMonitor
+metadata:
+  name: litellm
+spec:
+  selector:
+    matchLabels:
+      app.kubernetes.io/name: litellm
+      app.kubernetes.io/instance: litellm
+  endpoints:
+  - port: http
+    # trailing slash matters, same path the chart's ServiceMonitor used
+    path: /metrics/
+    scheme: http
+    interval: 30s
+    authorization:
+      type: Bearer
+      # Secret is created by the litellm chart, same namespace as this monitor.
+      credentials:
+        name: litellm-masterkey
+        key: masterkey
