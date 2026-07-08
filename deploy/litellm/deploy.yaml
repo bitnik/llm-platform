@@ -24,7 +24,7 @@ spec:
     spec:
       # helm show chart oci://ghcr.io/berriai/litellm-helm
       chart: litellm-helm
-      version: "1.90.0"
+      version: "1.91.0"
       sourceRef:
         kind: HelmRepository
         name: litellm
