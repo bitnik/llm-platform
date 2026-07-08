@@ -7,7 +7,9 @@ apiVersion: source.toolkit.fluxcd.io/v1
 kind: HelmRepository
 metadata:
   name: vllm-stack
-  namespace: flux-system
+  # kustomize's namespace transformer forces vllm-stack anyway; keep the
+  # field truthful so it matches the HelmRelease sourceRef below
+  namespace: vllm-stack
 spec:
   interval: 1h
   url: https://vllm-project.github.io/production-stack
