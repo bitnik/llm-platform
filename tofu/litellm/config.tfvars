@@ -61,7 +61,7 @@ users = {
 
 service_accounts = {
   # Autonomy is where runaways happen: keep the agent key tightly bounded.
-  kagent = {
+  kagent-poc = {
     team = "agents"
     # kill-switch: an agent stuck in a loop dies here, not at month's end
     max_budget      = 25

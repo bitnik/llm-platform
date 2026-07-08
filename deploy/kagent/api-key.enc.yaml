@@ -4,8 +4,7 @@ metadata:
     name: kagent-openai
     namespace: kagent
 stringData:
-    #ENC[AES256_GCM,data:PXTne9vdsI2f1CV6c0r6ETLXLIHErBAKzQPqBi7cRY7bbo9XwZ9dzLbrk2JUKpQaK7QXzVCGeig78iApyTFUryWJ6Cgjh5TbRA==,iv:rSyF4PF1I7qu3SQlCVL2zseAsg1hEXcTS03mv+uTeHo=,tag:fZ+CuQjBFvll/CO5eDuq9Q==,type:comment]
-    OPENAI_API_KEY: ENC[AES256_GCM,data:GlyKPrRgj4mHa7q+S9l0p4NzcHHSFPfdB3a7DWBGGkp4ZMJC9x4=,iv:0E78mnMiMOwLZTPN58egFmouH5wW8lqPZrAFbr2DEYY=,tag:DO0esSCkvukSwALT7PrXWw==,type:str]
+    OPENAI_API_KEY: ENC[AES256_GCM,data:sGOZOMxKQWmxW0+JIIRRBLJCnD6C1wKf1Q==,iv:bQ0zKOB0PJazhYSsBvyV30bFeBfAMIrGR8abRlc3pvo=,tag:MPbeQYSmg24mbWnMtl/UXA==,type:str]
 sops:
     age:
         - enc: |
@@ -27,6 +26,6 @@ sops:
             -----END AGE ENCRYPTED FILE-----
           recipient: age1983r92uvhyfsud6nvn5pjnv7jvkxx3wsfhu68j32ll8uqpnwmass90k80w
     encrypted_regex: ^(data|stringData)$
-    lastmodified: "2026-07-06T14:46:44Z"
-    mac: ENC[AES256_GCM,data:BrNNt8rdd8hXu+OzYow4VHRWyIS4Eb/p3Kldt0YLBIQOVg5iXEy8EOtqONRrypqlrVQnmNEDBexl17KQfuEcmv6SRA4tFe+DK82IYMvUoc0u7V5Lf6RuptnW4xt4gaoJhJVJbL+Vc2fR0DFGXEq4aPTe22R3+QYU2TBdKf8pwq4=,iv:qvofg0LKvprYucIbofHVciRA8JqACRGKTY089TMWxrk=,tag:4BOEmMsW8ab+skyjZONGdA==,type:str]
+    lastmodified: "2026-07-08T09:40:28Z"
+    mac: ENC[AES256_GCM,data:ntC+3kPWAnaDCCL4ICDjQQrYWOcxSKFmHYUB70oFylmZKy7J3wwTMDC5gR2I9VN6vqi79qCDNLLVfVsWNRnFsdq2cP7ci5cGN1NUNgXra0d/n1Eu0v4r+rwFxv5uVSNulD76OWvrp742Z2pRlSBmFRZsG92uzlKVakge7FXyJ2U=,iv:5jcNDrLUoYCJYeNutTk9Ml3mlVoH+Mgqb3skpjCjhxY=,tag:XTALoDR117TQgsTYqA83OQ==,type:str]
     version: 3.13.1
