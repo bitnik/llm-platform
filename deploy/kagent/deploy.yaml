@@ -30,7 +30,7 @@ spec:
     spec:
       # helm show chart oci://ghcr.io/kagent-dev/kagent/helm/kagent-crds
       chart: kagent-crds
-      version: "0.9.10"
+      version: "0.9.11"
       sourceRef:
         kind: HelmRepository
         name: kagent
@@ -54,7 +54,7 @@ spec:
     spec:
       # helm show chart oci://ghcr.io/kagent-dev/kagent/helm/kagent
       chart: kagent
-      version: "0.9.10"
+      version: "0.9.11"
       sourceRef:
         kind: HelmRepository
         name: kagent
