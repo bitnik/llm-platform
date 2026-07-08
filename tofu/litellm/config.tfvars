@@ -40,6 +40,18 @@ teams = {
       description = "human developers, local testing"
     }
   }
+  # unbyte test workloads — own envelope so a runaway test can't starve the
+  # agents pool; sized small, grow it when the workload becomes real.
+  unbyte = {
+    models          = ["devstral-small-2-24b-awq-4bit"]
+    max_budget      = 20
+    budget_duration = "30d"
+    tpm_limit       = 100000
+    rpm_limit       = 60
+    metadata = {
+      description = "unbyte test workloads"
+    }
+  }
 }
 
 users = {
@@ -55,6 +67,19 @@ users = {
       # plan` — the key just starts failing auth; rotate it with
       # `just tofu apply -replace='litellm_key.user["bitnik"]'`
       duration = "90d"
+    }
+  }
+  marc = {
+    email = "marc@unbyte.de"
+    team  = "developers"
+    # same shape as bitnik: budget backstop only, no key-level tpm/rpm —
+    # the GPU and the developers team pool are the real limits.
+    # NOTE: bitnik + marc key budgets (25 + 25) now fill the team's 50 pool;
+    # the team cap still wins if both max out in the same cycle.
+    key = {
+      max_budget      = 25
+      budget_duration = "30d"
+      duration        = "90d"
     }
   }
 }
@@ -75,6 +100,20 @@ service_accounts = {
     metadata = {
       workload  = "kagent"
       namespace = "kagent"
+    }
+  }
+  # Test client for unbyte, runs outside the cluster; keep it on a short
+  # leash — bump limits (or budget) only when it graduates from testing.
+  unbyte-test = {
+    team            = "unbyte"
+    max_budget      = 10 # half the unbyte team pool
+    budget_duration = "30d"
+    tpm_limit       = 50000
+    rpm_limit       = 30
+    # test client, no need for bursty parallelism on a single shared GPU
+    max_parallel_requests = 2
+    metadata = {
+      workload = "unbyte-test"
     }
   }
 }
