@@ -105,6 +105,14 @@ spec:
         #        Disable this again and allow only the secrets needed by the tool server using additionalRules.
         #        For example "helm list" requires read access to the helm release secrets.
         allowSecrets: true
+        # # readOnly still grants Secret read unless this is false. Keep false:
+        # # the tool server is driven by LLM output, so with Secret read a single
+        # # prompt injection could exfiltrate the litellm master key, TLS keys or
+        # # DB creds. Trade-off: "helm list" needs read access to helm release
+        # # secrets (type helm.sh/release.v1), and ClusterRole rules can't scope
+        # # by secret type — re-grant per namespace with Roles if the helm agent
+        # # needs it (see Roadmap).
+        # allowSecrets: false
         # read-only ClusterRole covers core groups but NOT CRDs.
         additionalRules:
         # - apiGroups:

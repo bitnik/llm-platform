@@ -231,4 +231,5 @@ curl -s https://$URL/v1/messages -H "Authorization: Bearer $LITELLM_KEY" \
 - [x] Configure LiteLLM users, keys, budgets, rate-limits with OpenTofu + [terraform-provider-litellm](https://github.com/ncecere/terraform-provider-litellm), see [tofu/litellm](tofu/litellm)
 - [ ] OTel for traces + enable alerts
 - [ ] Automated E2E tests in GitHub Actions (reliability checks). Add a “sleep" API test (Validate that  the PVC hot-load switch works).
-- [ ] Second model + sleep/wake VRAM switching (See https://docs.vllm.ai/projects/production-stack/en/latest/use_cases/sleep-wakeup-mode.html)
+- [ ] Scope kagent-tools secret access: `allowSecrets` is now true. Disable it again and allow only the secrets needed by the tool server using additionalRules. See [deploy/kagent/deploy.yaml](deploy/kagent/deploy.yaml).
+- [ ] Second model + sleep/wake VRAM switching (See https://docs.vllm.ai/projects/production-stack/en/latest/use_cases/sleep-wakeup-mode.html and https://github.com/vllm-project/production-stack/blob/main/tutorials/assets/values-19-sleep-mode-aware.yaml)

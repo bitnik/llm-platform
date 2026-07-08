@@ -57,7 +57,8 @@ just tofu output team_ids
 kagent reads its key from the SOPS-encrypted `kagent-openai` secret:
 
 ```sh
-just tofu output -json keys | jq -r .kagent
+# NOTE: hyphenated aliases need jq's quoted syntax
+just tofu output -json keys | jq -r '."kagent-poc"'
 # paste it as OPENAI_API_KEY in:
 just edit deploy/kagent/api-key.enc.yaml
 # commit + push, then:
@@ -115,7 +116,7 @@ For implementation details, see [`versions.tf`](versions.tf).
   rotated independently of the user.
 * Key expiry/rotation:
   * Keys are only rotated when the resource is replaced, e.g.
-    `tofu -chdir=tofu/litellm apply -replace='litellm_key.service_account["kagent"]'`.
+    `tofu -chdir=tofu/litellm apply -replace='litellm_key.service_account["kagent-poc"]'`.
   * Key expiry (`duration`) is invisible to `tofu plan`: an expired key stays in
     state unchanged and simply starts failing auth. Rotation is the same
     `-replace` — which is why service-account keys have no `duration` (a silent
