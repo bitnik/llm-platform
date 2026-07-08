@@ -127,6 +127,8 @@ spec:
       # # https://huggingface.co/cyankiwi/Qwen3.6-27B-AWQ-INT4
       # # https://docs.vllm.ai/projects/recipes/en/latest/Qwen/Qwen3.5.html
       # # AWQ 4-bit quant of Qwen3.6-27B: weights are ~15 GiB, which fits our 20 GiB card. -> NO, it doesn't! Its total weight size is ~20.5 GB.
+      # # Qwen3.6-27B is a completely different beast compared to Devstral. If Devstral is a hyper-focused coding specialist, Qwen3.6-27B is like a Swiss Army knife with a Ph.D.
+      # # It is a reasoning model.
       # # - name: "qwen36-27b"
       # - name: "qwen36-27b-awq"
       #   repository: "vllm/vllm-openai"

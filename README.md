@@ -165,9 +165,29 @@ Authenticate with a LiteLLM key.
 Personal / workload keys (with budgets and rate-limits) are managed with OpenTofu,
 see [tofu/litellm](tofu/litellm).
 
+Accessing LiteLLM via UI:
+
 ```sh
+kubectl -n litellm port-forward svc/litellm 4000:4000
+# and then open http://localhost:4000/ui/ in your browser
+# to login use the following credentials
+# username:
+just extract deploy/litellm/config.enc.yaml '.stringData["values.yaml"]' | yq '.envVars.UI_USERNAME'
+# or
+# kubectl get secret -n litellm litellm-values -o yaml | yq '.data["values.yaml"]' | base64 -d | yq '.envVars.UI_USERNAME'
+# password:
+just extract deploy/litellm/config.enc.yaml '.stringData["values.yaml"]' | yq '.envVars.UI_PASSWORD'
+# or
+# kubectl get secret -n litellm litellm-values -o yaml | yq '.data["values.yaml"]' | base64 -d | yq '.envVars.UI_PASSWORD'
+```
+
+Accessing LiteLLM via API:
+
+```sh
+# First generate a key using [tofu/litellm](tofu/litellm)
 LITELLM_KEY=""
-# You can use the master key for convenience.
+LITELLM_KEY=$(just tofu output -json keys | jq -r .bitnik)
+# You can also use the masterkey secret (not recommended)
 # LITELLM_KEY=$(kubectl -n litellm get secret litellm-masterkey -o jsonpath='{.data.masterkey}' | base64 -d)
 URL=$(kubectl get ingress -n litellm litellm -o yaml | yq '.spec.tls.0.hosts.0')
 
@@ -186,7 +206,14 @@ curl -s https://$URL/v1/messages -H "Authorization: Bearer $LITELLM_KEY" \
   -H 'content-type: application/json' \
   -d '{"model":"'"$MODEL"'","max_tokens":300,"messages":[{"role":"user","content":"Explain what Kubernetes is in two sentences."}]}' | jq
 
-# Set reasoning effort low (default is change to high in litellm config)
+# Set reasoning_effort low here (the litellm config default is high).
+# NOTE: Devstral Small 2 is not a reasoning model. So this won't have an effect. It is just here as an example.
+
+# Set reasoning_effort low (litellm config defaults to high).
+# NOTE: Devstral Small 2 is not a reasoning model, so this has no effect,
+# since drop_params is true,
+# so litellm strips the param before it reaches the model.
+# Left here only as an example.
 curl -s https://$URL/v1/messages -H "Authorization: Bearer $LITELLM_KEY" \
   -H 'Content-Type: application/json' \
   -d '{
@@ -200,8 +227,8 @@ curl -s https://$URL/v1/messages -H "Authorization: Bearer $LITELLM_KEY" \
 ## Roadmap
 
 - [x] Observability: kube-prometheus-stack, DCGM, vLLM, LiteLLM metrics, grafana dashboards
-- [ ] OTel for traces + enable alerts
 - [x] Validate with kagent (in-cluster), kubectl-ai, k8sgpt, Claude Code, pi agent
 - [x] Configure LiteLLM users, keys, budgets, rate-limits with OpenTofu + [terraform-provider-litellm](https://github.com/ncecere/terraform-provider-litellm), see [tofu/litellm](tofu/litellm)
-- [ ] Second model + sleep/wake VRAM switching (See https://docs.vllm.ai/projects/production-stack/en/latest/use_cases/sleep-wakeup-mode.html)
+- [ ] OTel for traces + enable alerts
 - [ ] Automated E2E tests in GitHub Actions (reliability checks). Add a “sleep" API test (Validate that  the PVC hot-load switch works).
+- [ ] Second model + sleep/wake VRAM switching (See https://docs.vllm.ai/projects/production-stack/en/latest/use_cases/sleep-wakeup-mode.html)
