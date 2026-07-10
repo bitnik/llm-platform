@@ -4,37 +4,37 @@ metadata:
     name: kagent-openai
     namespace: kagent
 stringData:
-    OPENAI_API_KEY: ENC[AES256_GCM,data:h8eYx+iVWEIGrPOuh7fPIuKp9JvUA277bA==,iv:d6vgxTcesX9PLKOdmjy80iQwvzsMJdXxlrnvpw/6eyI=,tag:XXOHbyfM+oHervE/NINpHg==,type:str]
+    OPENAI_API_KEY: ENC[AES256_GCM,data:4DPtEQe0+FAndG7sN+FFr6Gy6PoZpkhLHQ==,iv:1MRVaQDRmOM+eHUWmCZ320tQC80/yBYezB88Rr4HfyM=,tag:TrBObLvID4UIccI6x/VoCQ==,type:str]
 sops:
     age:
         - enc: |
             -----BEGIN AGE ENCRYPTED FILE-----
-            YWdlLWVuY3J5cHRpb24ub3JnL3YxCi0+IFgyNTUxOSBUeURLdHl0eUlvT0ptMnlT
-            ZU1LU0JqSFUzUitDVkx6NXJzM0ZJVWlyeVdVCjhTc2VWbUlHaEsrQlFGNElOVGFY
-            QjVJV2puK2tMcWVKeng4K3ZjNE9aZVkKLS0tIE1tMEp3a2VaUmVjZ1drUE5qbzdB
-            K2dyNHJEa1RpVU11ZFJJN2xJNmxrYUUKz1UZEFnbRX+CRywhSqcXaS6TVD82kOkt
-            1UZ6oLwfcFWQjmZun4A8HG83wu94cuq6mtIFDS27NTUshzcmbjN12Q==
+            YWdlLWVuY3J5cHRpb24ub3JnL3YxCi0+IFgyNTUxOSBsVDUxa1M4a1FJRFNRZUMz
+            ZGlaZkF0d2VwUDVUNjIwSERpS2tHV0d0alV3CmhzMFVkN01YaGxmWHBEWjZrejRs
+            eWRJRy9POFRUaUs4anEwNWJnR1pKeHMKLS0tIGYwUFdEZTlqazdUa2hTa0NBSnIx
+            RmdBNGVlVXFVZldhSnhPaWJlY2VTNTQKIwM1GbmMv/eGfFRgVfg7lGgbCq6Ldzjq
+            Hco2OwjcqqQKtp49Pq7Xva17vJe0JxIlqD855MXIrNxpKE2Y5iZ0uQ==
             -----END AGE ENCRYPTED FILE-----
           recipient: age1yltgwsnfxgstlyhf2ek9kcug0f6hw9dkhkang9kcdr77qgj8ay4qg6p3yy
         - enc: |
             -----BEGIN AGE ENCRYPTED FILE-----
-            YWdlLWVuY3J5cHRpb24ub3JnL3YxCi0+IFgyNTUxOSBTbXFnRHBTamk1b2M3d0xa
-            WldtZm91dnhrZ0lSaUVTZTB4N3dlbG51aTJzClg5akpaYmNqOTc0QWo2M3NLaTRM
-            N2c5OVQyTWtPN1lScEE3cDJ3VTdVOWMKLS0tIEJxbHZGV1k2Q09aZy91elpzU0pK
-            WnFTNG9kZUlpSENBTnY2cURscWRac3cKxWjBwdT/mrQamcQcEykTeIykwSvWEt8q
-            utXhAUguI5Bfc9kVK9ygqnUXo/rcqKE0RTrytrhpRcP4u+7e5UJCvA==
+            YWdlLWVuY3J5cHRpb24ub3JnL3YxCi0+IFgyNTUxOSA3cUZmY2ViVFJWVnNlRWUx
+            M1UyYnRGK1pmOHpFenJsUEhIdFFzTzFZVFhrCjdiSkNoWFJic0JndVRieVlPZVJ0
+            U0FHUE43cG44b3dyN0xuVXVxYk10Q0UKLS0tIFR6NlgyV3JsM3ZHUlNzdkdaK3VC
+            WTdURWUzRm1UcHBpV0xqalpNYXR1MDgK05HazcIQgxJsaxkAbRVOBno+8yKg+ax9
+            J0aQZVZWOkDCgW0dLNWJazoAaE2+MgNYFl0EPNkHt1epCSQtqw1E4Q==
             -----END AGE ENCRYPTED FILE-----
           recipient: age1983r92uvhyfsud6nvn5pjnv7jvkxx3wsfhu68j32ll8uqpnwmass90k80w
         - enc: |
             -----BEGIN AGE ENCRYPTED FILE-----
-            YWdlLWVuY3J5cHRpb24ub3JnL3YxCi0+IFgyNTUxOSB0VndidWdLRjBSNU52aEZj
-            NzdPMEN1cE44V3kvUGJVaXFjQS92dVI0Y0hBCnl1SUZzZzlpOGlneDQ3Qmc1Ymtk
-            bHR5Qmpjd2tuUlRjc09wWlFsV0VKSlkKLS0tIGJOelB6eHpOSXB3K0tUL0JkTndY
-            bDU0SHJmdGRsNXZTVFNoSHRtdzNNNHcKDUILYXMI0K/UD4mRdyah5nFBeEiEialK
-            rEhuZpO2+vApZLGjhWIFif3f0x/CohZWOCMgPHb4hzaohgYyBvG5mw==
+            YWdlLWVuY3J5cHRpb24ub3JnL3YxCi0+IFgyNTUxOSBHYTJGdmJFYkRCK3FEQkt1
+            UnRlMCt4VzI3MFhMLzdzL05NVUtSN1cxTzN3CnJOZ0hyL0c4UTZMdnFRV3d2SFA4
+            TXVwN2NCdlRnNWlZYmxDQmloMVFMS1kKLS0tIDUxYUNjMTRXUVc0cXdPb1ZRZFNL
+            SU04WHhzYWNPdHBpMldRdFJVZW9XREEK4Azr5jC5dyxI4QkgIaHe8AuYTzqrz3y5
+            TciuNQPKjUWLWN6jgGWPM23cQcJYyoItsEPUt7exnR+hMYU6VGVcbw==
             -----END AGE ENCRYPTED FILE-----
-          recipient: age1wp6yt0crp3fm6tyr8f30svgvzx6d069uhecs74940mru0yyk4paqagfwwl
+          recipient: age1zmxxfmfawpushkt3juhu2eu0x8le3u385c623xjxn930ttqexc6sjcfhuz
     encrypted_regex: ^(data|stringData)$
-    lastmodified: "2026-07-10T14:45:18Z"
-    mac: ENC[AES256_GCM,data:ruhY2Tricbo4xFRAoukL6vkMKC5DT3WwJyrt88eWkr+K/Z/S37gn8ejOKtRVQmSEPatfW9CQPi0dbekAdHXNB9XsN8aLDf0csxRSrP4lHp/U65PEeiJ2zvE8JmodsvWfPXpXzn8Zc3tPrRH/ZiVY8M5wpi7teAzR4YuoQe6JOu0=,iv:uBOXy15IzljlthaokeTBvwqw/mgSqB+gmIYTjW3ljmE=,tag:peg+3Kev1ZhlWtrkdQSlDw==,type:str]
+    lastmodified: "2026-07-10T14:59:17Z"
+    mac: ENC[AES256_GCM,data:SJaJjYVX1lRUyjJ+jkLx8xk9+8CkYS4se1SL7iaYvpU+G9zLQd+wtxhWZ9GVhp5YGK52w/5c2z0xbxz9zxpYU7J/zJEChWd0wPWqwP0ixMKLYg575Of9RAwWLmGhALl/XaVEUaPGGzwXHKKcDzvJZcIhXIcsP+QlCvsR5jvf8s4=,iv:lmyhasWdAan4iEPHppEfg14fT2e0caz6aCQNsmhGfRE=,tag:cofNtnPrs8qi4xK6R3RlIg==,type:str]
     version: 3.13.1
