@@ -92,6 +92,7 @@ edit FILE:
     sops {{FILE}}
 
 # Extract a value from a encrypted .tfvars or .yaml file using grep/yq. Ex: `just extract deploy/litellm/config.enc.yaml '.stringData["values.yaml"]'` or `just extract tofu/litellm/config.enc.tfvars kube_config_path`.
+[group('sops')]
 extract FILE KEY:
     #!/usr/bin/env bash
     set -euo pipefail
