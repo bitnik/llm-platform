@@ -132,7 +132,7 @@ check:
 # setup:
 #     pre-commit install
 
-# run tofu against the LiteLLM workspace. Supports `init`, `plan`, `apply`.
+# run tofu against the LiteLLM workspace.
 [group('tofu')]
 tofu +CMD="plan":
     #!/usr/bin/env bash
